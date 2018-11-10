@@ -1,0 +1,8 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'QualPros' do
+  pod 'Stripe', '~> 11.2.0'
+  pod 'Braintree', '~> 4.19.0'
+  inherit! :search_paths
+end
