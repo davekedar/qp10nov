@@ -42,15 +42,30 @@ class Stripedemo extends Component {
     expyear: null,
     cvc: null,
     errordata: [],
-    payment_token: null
+    payment_token: null,
+    duration:null
+  };
+
+  componentWillMount = async () => {
+    //this._showDateTimePicker;
+    const { navigation } = this.props;
+    duration = navigation.getParam("duration");
+   
   };
 
   payme(comp) {
+    // var cardDetails = {
+    //   "card[number]": "4242424242424242",
+    //   "card[exp_month]": "12",
+    //   "card[exp_year]": "2023",
+    //   "card[cvc]": "123"
+    // };
+
     var cardDetails = {
-      "card[number]": "4242424242424242",
-      "card[exp_month]": "12",
-      "card[exp_year]": "2023",
-      "card[cvc]": "123"
+      "card[number]": this.state.number,
+      "card[exp_month]": this.state.expmonth,
+      "card[exp_year]": this.state.expyear,
+      "card[cvc]": this.state.cvc
     };
 
     var formBody = [];
@@ -78,7 +93,7 @@ class Stripedemo extends Component {
             //onsole.log(responseJson);
             this.state.payment_token = responseJson.id;
             var cardcharges = {
-              amount: "1",
+              amount: duration*100*55,
               currency: "gbp",
               source: this.state.payment_token,
               // source:"",
@@ -107,10 +122,12 @@ class Stripedemo extends Component {
             })
               .then(cardresponce => {
                 if (cardresponce.status == 200) {
+                  console.log(cardresponce);
                   alert("payment completed");
                 } else {
                   cardresponce.json().then(cardresponseJson => {
                     console.log(cardresponseJson);
+                    
         
                     alert(cardresponseJson.error.message);
                   });
@@ -172,15 +189,18 @@ class Stripedemo extends Component {
           <Body style={styles.body} />
           <Right style={styles.right} />
         </Header>
+      
         <View style={styles.logosec}>
-          <Image source={Logo} style={styles.logostyle} />
+          {/* <Image source={Logo} style={styles.logostyle} /> */}
+          <Text style={{fontWeight:"bold",fontSize:30,color:"#d91009"}}>Pay £{duration*55}</Text>
+          <Text style={{fontWeight:"bold",fontSize:30,color:"#d91009"}}>Enter Card Details</Text>
         </View>
         <Form style={styles.form}>
           <Item rounded style={styles.inputStyle}>
             <Input
               textAlign={I18nManager.isRTL ? "right" : "left"}
-              placeholder="number"
-              value={"4242 4242 4242 4242"}
+              placeholder="Card Number"
+              //value={"4242 4242 4242 4242"}
               style={styles.inputmain}
               onChangeText={number => {
                 this.setState({ number });
@@ -191,8 +211,8 @@ class Stripedemo extends Component {
           <Item rounded style={styles.inputStyle}>
             <Input
               textAlign={I18nManager.isRTL ? "right" : "left"}
-              placeholder="expmonth"
-              value={"09"}
+              placeholder="Exp Month"
+              //value={"09"}
               style={styles.inputmain}
               onChangeText={expmonth => {
                 this.setState({ expmonth });
@@ -203,8 +223,8 @@ class Stripedemo extends Component {
           <Item rounded style={styles.inputStyle}>
             <Input
               textAlign={I18nManager.isRTL ? "right" : "left"}
-              placeholder="expyear"
-              value={"18"}
+              placeholder="Exp Year"
+              //value={"18"}
               style={styles.inputmain}
               onChangeText={expyear => {
                 this.setState({ expyear });
@@ -215,8 +235,8 @@ class Stripedemo extends Component {
           <Item rounded style={styles.inputStyle}>
             <Input
               textAlign={I18nManager.isRTL ? "right" : "left"}
-              placeholder="cvc"
-              value={"111"}
+              placeholder="CVC"
+              //value={"111"}
               style={styles.inputmain}
               onChangeText={cvc => {
                 this.setState({ cvc });

@@ -43,8 +43,14 @@ class ProfileScreen extends Component {
             
           
     }
+    signOut = async () => {
+        //console.log('sdfds');
+        AsyncStorage.clear()
+        this.props.navigation.navigate('AuthLoading')
+    }
 
     render() {
+      
         return (
             <Container>
                 <Header style={{backgroundColor:'#d91009'}}>
@@ -83,7 +89,7 @@ class ProfileScreen extends Component {
                             <Icon active name="arrow-forward" />
                         </Right>
                     </ListItem>
-                    <ListItem icon onPress={() => this.props.navigation.navigate("ImageDemo")}>
+                    {/* <ListItem icon onPress={()=>{this.props.navigation.navigate('ImageDemo')}}>
                         <Left>
                             <Button style={{ backgroundColor: "#fff" }}>
                                 <Icon1 active name="shopping-cart" size={24} color='#A9A9A9' />
@@ -95,7 +101,7 @@ class ProfileScreen extends Component {
                         <Right>
                             <Icon active name="arrow-forward" />
                         </Right>    
-                    </ListItem>
+                    </ListItem> */}
                     <ListItem icon onPress={() => this.props.navigation.navigate("SettingsScreen")}>
                         <Left>
                             <Button style={{ backgroundColor: "#fff" }}>
@@ -143,6 +149,19 @@ class ProfileScreen extends Component {
                         </Left>
                         <Body>
                             <Text>Change Password</Text>
+                        </Body>
+                        <Right>
+                            <Icon active name="arrow-forward" />
+                        </Right>
+                    </ListItem>
+                    <ListItem icon onPress={this.signOut}>
+                        <Left>
+                            <Button style={{ backgroundColor: "#fff" }}>
+                                <Icon2 active name="md-power" size={24} color='#A9A9A9' />
+                            </Button>
+                        </Left>
+                        <Body>
+                            <Text>Sign Out</Text>
                         </Body>
                         <Right>
                             <Icon active name="arrow-forward" />

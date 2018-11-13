@@ -36,6 +36,7 @@ import CourseDetail from "./SRC/screens/CourseDetail";
 import Stripedemo from "./SRC/screens/Stripedemo";
 import BookTutionScreen from "./SRC/screens/BookTutionScreen";
 import Paypaldemo from "./SRC/screens/Paypaldemo";
+import GroupMember from "./SRC/screens/GroupMember";
 
 const AuthStackNavigator = createStackNavigator({
   Welcome: WelcomeScreen,
@@ -46,6 +47,7 @@ const AuthStackNavigator = createStackNavigator({
   ProfileEditScreen: ProfileEditScreen,
   SettingsScreen: SettingsScreen,
   ChangePasswordScreen: ChangePasswordScreen,
+  // ImageDemo: ImageDemo,
   CalenderView: CalenderView,
   TutorCalender:TutorCalender,
   ImageDemo:ImageDemo,
@@ -55,6 +57,7 @@ const AuthStackNavigator = createStackNavigator({
   Stripedemo:Stripedemo,
   BookTutionScreen:BookTutionScreen,
   Paypaldemo:Paypaldemo,
+  GroupMember:GroupMember,
   
 });
 

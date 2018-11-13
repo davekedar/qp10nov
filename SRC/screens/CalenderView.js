@@ -126,7 +126,7 @@ class CalenderView extends Component {
                         })
                     }
 
-                    <Text style={styles.text}>Calendar with marked dates and hidden arrows</Text>
+                    {/* <Text style={styles.text}>Calendar with marked dates and hidden arrows</Text> */}
                     <Calendar
                         style={styles.calendar}
                         firstDay={1}

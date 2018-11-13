@@ -3,6 +3,7 @@ package com.qualpros;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 import com.taessina.paypal.RNPaypalWrapperPackage;
 import com.gettipsi.stripe.StripeReactPackage;
 import com.smarkets.paypal.RNPaypalPackage;
@@ -34,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactNativeOneSignalPackage(),
             new RNPaypalWrapperPackage(),
             new StripeReactPackage(),
             new RNPaypalPackage(),
