@@ -36,7 +36,8 @@ import CourseDetail from "./SRC/screens/CourseDetail";
 import Stripedemo from "./SRC/screens/Stripedemo";
 import BookTutionScreen from "./SRC/screens/BookTutionScreen";
 import Paypaldemo from "./SRC/screens/Paypaldemo";
-import GroupMember from "./SRC/screens/GroupMember";
+import Groupmembers from './SRC/screens/Groupmembers';
+
 
 const AuthStackNavigator = createStackNavigator({
   Welcome: WelcomeScreen,
@@ -57,7 +58,7 @@ const AuthStackNavigator = createStackNavigator({
   Stripedemo:Stripedemo,
   BookTutionScreen:BookTutionScreen,
   Paypaldemo:Paypaldemo,
-  //GroupMember:GroupMember,
+  Groupmembers:Groupmembers,
   
 });
 
