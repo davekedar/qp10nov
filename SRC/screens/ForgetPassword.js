@@ -117,4 +117,3 @@ class ForgetPassword extends Component {
 }
 export default ForgetPassword;
 
-

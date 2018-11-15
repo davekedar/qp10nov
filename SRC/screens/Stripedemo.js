@@ -43,13 +43,38 @@ class Stripedemo extends Component {
     cvc: null,
     errordata: [],
     payment_token: null,
-    duration:null
+    duration:null,
+    user:[]
   };
 
   componentWillMount = async () => {
     //this._showDateTimePicker;
     const { navigation } = this.props;
     duration = navigation.getParam("duration");
+    const userid = await AsyncStorage.getItem('user_id');
+
+        try {
+            let { data } = await axios.post('https://chat.qualpros.com/api/get_student_profile', {
+                student_id: userid
+            })
+                .then((response) => {
+
+                    if (response.data.data.status === 'success') {
+
+                        this.setState({ user: response.data.data.student_info })
+
+                    } else {
+                        console.log(response.data.data);
+
+                        alert(response.data.data.message)
+
+
+                    }
+                })
+        } catch (err) {
+            console.log(err);
+        }
+
    
   };
 
@@ -90,15 +115,15 @@ class Stripedemo extends Component {
       .then(response => {
         if (response.status == 200) {
           response.json().then(responseJson => {
-            //onsole.log(responseJson);
+            console.log(this.state.user.email);
             this.state.payment_token = responseJson.id;
             var cardcharges = {
               amount: duration*100*55,
               currency: "gbp",
               source: this.state.payment_token,
               // source:"",
-              receipt_email: "vishal.nathani17@gmail.com",
-              description: "terst payment"
+              receipt_email: this.state.user.email,
+              description: "test payment"
             };
 
             var formcardBody = [];

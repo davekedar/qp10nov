@@ -42,6 +42,35 @@ class SignInScreen extends Component {
     email: null,
     password: null,
   }
+
+componentWillMount() {
+  //alert('test')
+  OneSignal.init("0fc8bf31-ee8e-4916-8b50-475c7cdf6538");
+
+  OneSignal.addEventListener("received", this.onReceived);
+  OneSignal.addEventListener("opened", this.onOpened);
+  OneSignal.addEventListener("ids", this.onIds);
+}
+componentWillUnmount() {
+  OneSignal.removeEventListener("received", this.onReceived);
+  OneSignal.removeEventListener("opened", this.onOpened);
+  OneSignal.removeEventListener("ids", this.onIds);
+}
+
+onReceived(notification) {
+  console.log("Notification received: ", notification);
+}
+
+onOpened(openResult) {
+  console.log("Message: ", openResult.notification.payload.body);
+  console.log("Data: ", openResult.notification.payload.additionalData);
+  console.log("isActive: ", openResult.notification.isAppInFocus);
+  console.log("openResult: ", openResult);
+}
+
+onIds(device) {
+  console.log("Device info: ", device);
+}
   constructor(props) {
     super(props);
     this.state = { showAlert: false };

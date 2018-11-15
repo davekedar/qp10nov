@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   TextInput,
   FlatList,
-  Platform
+  Platform,
+  AsyncStorage
 } from "react-native";
 import Tutor from "../image/krutika.jpg";
 import {
@@ -23,58 +24,101 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Icon1 from "react-native-vector-icons/FontAwesome";
 import axios from "axios";
+import Hyperlink from 'react-native-hyperlink'
 
 export default class ChatBox extends Component {
   static navigationOptions = {
     header: null
   };
+  state = {
+    group_msgs: [],
+    student_id: null,
+    groupType:null,
+    typedText:null
 
-  componentWillMount = async () => {
-    //this._showDateTimePicker;
-    const { navigation } = this.props;
-    group_id = navigation.getParam("group_id");
-    groupName = navigation.getParam("groupName");
   };
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [
-        {
-          id: "1",
-          date: "9:50 am",
-          type: "out",
-          message:
-            "Hello Krutika, can you help me with a tricky past paper question? "
-        },
-        {
-          id: "2",
-          date: "9:51 am",
-          type: "in",
-          message:
-            "Hello Michael, yes of course. Which paper are you struggling with and when would you like to start?"
-        },
-        {
-          id: "3",
-          date: "9:55 am",
-          type: "out",
-          message:
-            "Please can we start this weekend? I would like you to help me with the 2018 paper. "
-        },
-        {
-          id: "4",
-          date: "9:57 am",
-          type: "in",
-          message:
-            "Yes. I am available on weekends. Please book a private tuition session."
-        }
-      ]
-    };
-  }
+ 
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     data: [
+  //       {
+  //         id: "1",
+  //         date: "9:50 am",
+  //         type: "out",
+  //         message:
+  //           "Hello Krutika, can you help me with a tricky past paper question? "
+  //       },
+  //       {
+  //         id: "2",
+  //         date: "9:51 am",
+  //         type: "in",
+  //         message:
+  //           "Hello Michael, yes of course. Which paper are you struggling with and when would you like to start?"
+  //       },
+  //       {
+  //         id: "3",
+  //         date: "9:55 am",
+  //         type: "out",
+  //         message:
+  //           "Please can we start this weekend? I would like you to help me with the 2018 paper. "
+  //       },
+  //       {
+  //         id: "4",
+  //         date: "9:57 am",
+  //         type: "in",
+  //         message:
+  //           "Yes. I am available on weekends. Please book a private tuition session."
+  //       }
+  //     ]
+  //   };
+  // }
 
   renderDate = date => {
     return <Text style={styles.time}>{date}</Text>;
   };
 
+  componentWillMount = () => {
+    this.loading();
+    const { navigation } = this.props;
+    groupName = navigation.getParam("groupName");
+    group_id = navigation.getParam("group_id");
+    groupType = navigation.getParam("groupType");
+  };
+
+  loading = async () => {
+    const userid = await AsyncStorage.getItem("user_id");
+    this.state.student_id = userid;
+
+    try {
+      let { data } = await axios.get('https://www.qualpros.com/chat/imApi/getMessage?groupId=6&limit=10&start=0&userId=62').then(response => {
+          //  console.log(response)
+          if (response.status == 200) {
+             this.setState({ group_msgs: response.data.response });
+              console.log(response.data.response)
+          } else {
+          }
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  reset = async () => {
+    this.setState({searchText: ''})
+}
+getInitialState=function () {
+  return {
+    searchText: ''
+  }
+}
+
+
+onSubmitEditing = async () => {
+  // console.log('dfd')
+    this.setState({
+        typedText:"",
+    })
+}
   render() {
     return (
       <Container>
@@ -99,12 +143,14 @@ export default class ChatBox extends Component {
           </Left>
           <Body>
            
-              <Text onPress={() => {
-                this.props.navigation.navigate("GroupMember", {
-                  group_id: group_id,
-                 
-                });
-              }}
+              <Text 
+               onPress={() => {
+                   
+                    this.props.navigation.navigate("Groupmembers", {
+                      group_id:group_id,
+                      groupname:groupName,
+                    });
+                  }}
                 style={{
                   alignSelf: Platform.OS == "android" ? "center" : null,
                   fontSize: 17,
@@ -116,33 +162,39 @@ export default class ChatBox extends Component {
             
           </Body>
           <Right>
+          {groupType == '1' ?
             <Button
               style={{ backgroundColor: "#d91009" }}
               onPress={() => {
                 this.props.navigation.navigate("TutorCalender");
               }}
             >
-              <Icon1 active name="calendar" size={24} color="#FFF" />
+         
+              <Icon1 active name="calendar" size={24} color="#FFF" onPress={this.clearText} />
             </Button>
+            : null 
+         }
           </Right>
         </Header>
         <View style={styles.container}>
           <FlatList
             style={styles.list}
-            data={this.state.data}
+            data={this.state.group_msgs}
             keyExtractor={item => {
-              return item.id;
+              return item.message.m_id;
             }}
             renderItem={message => {
-              console.log(item);
               const item = message.item;
-              let inMessage = item.type === "in";
-              let itemStyle = inMessage ? styles.itemIn : styles.itemOut;
+              console.log(item.message.sender);
+              let inMessage = (item.message.sender === '62') ? 'out' : 'in';
+              let itemStyle = (inMessage === 'in') ? styles.itemIn : styles.itemOut;
               return (
                 <View style={[styles.item, itemStyle]}>
-                  <View style={[styles.balloon]}>
-                    <Text>{item.message}</Text>
-                  </View>
+                  
+                  {item.message.type === 'text'? <View style={[styles.balloon]}><Text>{item.message.message}</Text></View>:
+                  null
+                  }
+                  
                 </View>
               );
             }}
@@ -153,8 +205,15 @@ export default class ChatBox extends Component {
                 style={styles.inputs}
                 placeholder="Write a message..."
                 underlineColorAndroid="transparent"
-                onChangeText={name_address => this.setState({ name_address })}
+                onChangeText={(typedText)=>this.setState({
+                    typedText
+                })}
+                value={this.state.typedText === ''  ? null : this.state.typedText}
+
+               
               />
+              
+                 <Ionicons name="md-send" size={30} color='#d91009' onPress={(this.onSubmitEditing)}/>
             </View>
 
             {/* <TouchableOpacity style={styles.btnSend}>

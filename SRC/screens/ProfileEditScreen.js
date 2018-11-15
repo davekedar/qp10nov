@@ -8,7 +8,7 @@ import {
     ImageBackground,
     TouchableOpacity,
     BackHandler,
-    I18nManager,
+    I18nManager, 
     StyleSheet,
     AsyncStorage,
     KeyboardAvoidingView,
@@ -197,4 +197,3 @@ class ProfileEditScreen extends Component {
     }
 }
 export default ProfileEditScreen;
-

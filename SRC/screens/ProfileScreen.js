@@ -102,7 +102,7 @@ class ProfileScreen extends Component {
                             <Icon active name="arrow-forward" />
                         </Right>    
                     </ListItem> */}
-                    <ListItem icon onPress={() => this.props.navigation.navigate("SettingsScreen")}>
+                    <ListItem icon >
                         <Left>
                             <Button style={{ backgroundColor: "#fff" }}>
                                 <Icon2 active name="md-settings" size={24} color='#A9A9A9' />
@@ -115,7 +115,7 @@ class ProfileScreen extends Component {
                             <Icon active name="arrow-forward" />
                         </Right>
                     </ListItem>
-                    <ListItem icon onPress={() => this.props.navigation.navigate("ReactNavigationExample")}>
+                    {/* <ListItem icon onPress={() => this.props.navigation.navigate("ReactNavigationExample")}>
                         <Left>
                             <Button style={{ backgroundColor: "#fff" }}>
                                 <Icon2 active name="md-help" size={24} color='#A9A9A9' />
@@ -127,8 +127,8 @@ class ProfileScreen extends Component {
                         <Right>
                             <Icon active name="arrow-forward" />
                         </Right>
-                    </ListItem>
-                    <ListItem icon onPress={() => this.props.navigation.navigate("Stripedemo")}>
+                    </ListItem> */}
+                    <ListItem icon >
                         <Left>
                             <Button style={{ backgroundColor: "#fff" }}>
                                 <Icon2 active name="md-mail" size={24} color='#A9A9A9' />

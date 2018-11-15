@@ -14,6 +14,7 @@ import {
 } from "native-base";
 import Tutor from "../image/krutika.jpg";
 import axios from "axios";
+import group_img from "../image/group_img.png";
 
 class ChatScreen extends Component {
   state = {
@@ -77,22 +78,25 @@ class ChatScreen extends Component {
                     onPress={() => {
                       this.props.navigation.navigate("ChatBox", {
                       group_id:group.groupId,
-                     groupName:group.groupName
+                     groupName:group.groupName,
+                     groupType:group.groupType,
                     });
                       
                     }}
                   >
                     <Left>
-                      <Thumbnail source={Tutor} />
+                    {group.group_type === '1' ?
+                    <Thumbnail source={{uri : group.groupImage}} /> :
+                      <Thumbnail source={group_img} /> }
                     </Left>
                     <Body>
                       <Text> {group.groupName}</Text>
-                      <Text note>
+                      {<Text note>
                         Yes I am available on Weekends for personal Tuitions
-                      </Text>
+                      </Text> }
                     </Body>
                     <Right>
-                      <Text note>3:43 pm</Text>
+                      <Text>3:43 pm</Text>
                     </Right>
                   </ListItem>
                 </List>

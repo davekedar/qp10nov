@@ -44,6 +44,8 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* QualProsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* QualProsTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
+		3D50EEEA219C263D0031B668 /* libRCTOneSignal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D50EEE9219C261A0031B668 /* libRCTOneSignal.a */; };
+		3DDAEE55219C31E60088C013 /* qp-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DDAEE54219C31E60088C013 /* qp-logo.png */; };
 		3ED2BF6E3D484F2E90C4C7F4 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB81C950C6A454EA646BB78 /* libRNVectorIcons.a */; };
 		4C29FDAC965F4867B583FCE1 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1C069AC8DD8B40DD9A3E0D4F /* AntDesign.ttf */; };
 		4CB57EAAADC54666AB4F55CF /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9902DDCC86CE470C9ADE8200 /* FontAwesome5_Brands.ttf */; };
@@ -306,6 +308,13 @@
 			remoteGlobalIDString = A39873CE1EA65EE60051E01A;
 			remoteInfo = "RNVectorIcons-tvOS";
 		};
+		3D50EEE8219C261A0031B668 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3D50EEE4219C261A0031B668 /* RCTOneSignal.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3245CDED1BFEE35C00EABF68;
+			remoteInfo = RCTOneSignal;
+		};
 		3D7D48D22186DB8400026A03 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C1C354E07F954D77B2AAC51E /* RNPaypal.xcodeproj */;
@@ -475,6 +484,9 @@
 		2D02E4901E0B4A5D006451C7 /* QualPros-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "QualPros-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		36D3A176EBA34BF4A319D463 /* libBVLinearGradient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBVLinearGradient.a; sourceTree = "<group>"; };
+		3D50EEE3219B09A30031B668 /* QualPros.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = QualPros.entitlements; path = QualPros/QualPros.entitlements; sourceTree = "<group>"; };
+		3D50EEE4219C261A0031B668 /* RCTOneSignal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTOneSignal.xcodeproj; path = "../node_modules/react-native-onesignal/ios/RCTOneSignal.xcodeproj"; sourceTree = "<group>"; };
+		3DDAEE54219C31E60088C013 /* qp-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qp-logo.png"; sourceTree = "<group>"; };
 		3DDC24E636364C1B9A3A7A15 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		3F2BF766A24C4E4B927259BF /* libRNPaypal.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNPaypal.a; sourceTree = "<group>"; };
 		4BD7951F3AC844129293F220 /* KCKeepAwake.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = KCKeepAwake.xcodeproj; path = "../node_modules/react-native-keep-awake/ios/KCKeepAwake.xcodeproj"; sourceTree = "<group>"; };
@@ -522,6 +534,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D50EEEA219C263D0031B668 /* libRCTOneSignal.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -657,6 +670,8 @@
 		13B07FAE1A68108700A75B9A /* QualPros */ = {
 			isa = PBXGroup;
 			children = (
+				3DDAEE54219C31E60088C013 /* qp-logo.png */,
+				3D50EEE3219B09A30031B668 /* QualPros.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -794,6 +809,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		3D50EEE5219C261A0031B668 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3D50EEE9219C261A0031B668 /* libRCTOneSignal.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		3D7D48CD2186DB8400026A03 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -854,6 +877,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				3D50EEE4219C261A0031B668 /* RCTOneSignal.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -1014,7 +1038,19 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = XRG7577F9M;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = XRG7577F9M;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1078,6 +1114,10 @@
 				{
 					ProductGroup = 00C302D41ABCB9D200DB3ED1 /* Products */;
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
+				},
+				{
+					ProductGroup = 3D50EEE5219C261A0031B668 /* Products */;
+					ProjectRef = 3D50EEE4219C261A0031B668 /* RCTOneSignal.xcodeproj */;
 				},
 				{
 					ProductGroup = 3D0AEE912181A338004B6E68 /* Products */;
@@ -1363,6 +1403,13 @@
 			remoteRef = 3D0CBBDE2179C41E00F45DDB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		3D50EEE9219C261A0031B668 /* libRCTOneSignal.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTOneSignal.a;
+			remoteRef = 3D50EEE8219C261A0031B668 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		3D7D48D32186DB8400026A03 /* libRNPaypal.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1513,6 +1560,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				4C29FDAC965F4867B583FCE1 /* AntDesign.ttf in Resources */,
+				3DDAEE55219C31E60088C013 /* qp-logo.png in Resources */,
 				4E2CA95ABDFD490E83F32A44 /* Entypo.ttf in Resources */,
 				2BFACF300B2A47748CFC048B /* EvilIcons.ttf in Resources */,
 				EE4F6AF1CE814A4A81AB22A6 /* Feather.ttf in Resources */,
@@ -1685,6 +1733,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = XRG7577F9M;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1721,6 +1770,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = XRG7577F9M;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1752,9 +1802,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C9FEB7DA402EB2A377C96F82 /* Pods-QualPros.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
+				CODE_SIGN_ENTITLEMENTS = QualPros/QualPros.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = XRG7577F9M;
+				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1767,15 +1820,17 @@
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-paypal/ios",
 					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/react-native-onesignalios/**",
 				);
 				INFOPLIST_FILE = QualPros/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.qualpros;
 				PRODUCT_NAME = QualPros;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1785,8 +1840,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0BED7622510CADC171D0B607 /* Pods-QualPros.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
+				CODE_SIGN_ENTITLEMENTS = QualPros/QualPros.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XRG7577F9M;
+				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1799,15 +1857,17 @@
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-paypal/ios",
 					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/react-native-onesignalios/**",
 				);
 				INFOPLIST_FILE = QualPros/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.qualpros;
 				PRODUCT_NAME = QualPros;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

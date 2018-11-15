@@ -224,8 +224,18 @@ class TutorDetail extends Component {
                   </Left>
                   <Right />
                 </CardItem>
-                <View>
-                  <Button
+                <View> 
+                <Video
+                        //autoPlay
+                        url={url}
+                        title={title}
+                        logo={logo}
+                        placeholder={placeholder}
+                        onMorePress={() => this.onMorePress()}
+                        onFullScreen={status => this.onFullScreen(status)}
+                        //fullScreenOnly
+                      />
+                  {/* <Button
                     style={{
                       padding: 10,
                       backgroundColor: "#d91009",
@@ -256,17 +266,8 @@ class TutorDetail extends Component {
                         //fullScreenOnly
                       />
                     </View>
-                  </Modal>
-                  {/* <Video
-                      //autoPlay
-                      url={url}
-                      title={title}
-                      logo={logo}
-                      placeholder={placeholder}
-                      onMorePress={() => this.onMorePress()}
-                      onFullScreen={status => this.onFullScreen(status)}
-                      //fullScreenOnly
-                    /> */}
+                  </Modal> */}
+                  
                 </View>
                 <CardItem />
                 <CardItem cardBody>
@@ -287,7 +288,9 @@ class TutorDetail extends Component {
                   <Right>
                     <Button
                       style={{ padding: 10, backgroundColor: "#d91009" }}
-                      onPress={this._toggleModal}
+                      onPress={() => {
+                this.props.navigation.navigate("TutorCalender");
+              }}
                     >
                       <Text>Book Now</Text>
                     </Button>

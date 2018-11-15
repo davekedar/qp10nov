@@ -180,50 +180,23 @@ class BookTutionScreen extends Component {
 
             <View style={{ flex: 1, flexDirection: "row" }}>
               <View>
-                <Button
-                  style={{ marginTop: 5, marginLeft: 9 }}
-                  bordered
-                  info
-                  // onPress={() => {
-                  //     this.showAlert();
-                  // }}
-                  onPress={() => this.props.navigation.navigate("Paypaldemo")}
-                >
-                  <Text>
-                    <Icon1
-                      style={{ marginTop: 5, marginLeft: 11 }}
-                      active
-                      name="cc-paypal"
-                      size={24}
-                    />
-                  </Text>
-                </Button>
-              </View>
-              <View>
-                <Button
-                  style={{ marginTop: 5, marginLeft: 9 }}
-                  bordered
-                  success
-                  // onPress={() => {
-                  //     this.showAlert();
-                  // }}
-                  //onPress={() => this.props.navigation.navigate("Stripedemo")}
-                  onPress={() => {
+              <Button
+                    style={{
+                      padding: 10,
+                      backgroundColor: "#d91009",
+                      marginLeft: 5,
+                      marginTop:5
+                    }}
+                    onPress={() => {
                     /* 1. Navigate to the Details route with params */
                     this.props.navigation.navigate("Stripedemo", {
                       duration:this.state.duration
                     });
                   }}
-                >
-                  <Text>
-                    <Icon1
-                      style={{ marginTop: 5, marginLeft: 11 }}
-                      active
-                      name="cc-stripe"
-                      size={24}
-                    />
-                  </Text>
-                </Button>
+                  >
+                    <Text style={{ color: "#fff" }}>Pay Now</Text>
+                  </Button>
+                
               </View>
             </View>
             {/* <Button style={{ marginTop: 5, marginLeft: 9 }} bordered danger

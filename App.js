@@ -57,7 +57,7 @@ const AuthStackNavigator = createStackNavigator({
   Stripedemo:Stripedemo,
   BookTutionScreen:BookTutionScreen,
   Paypaldemo:Paypaldemo,
-  GroupMember:GroupMember,
+  //GroupMember:GroupMember,
   
 });
 

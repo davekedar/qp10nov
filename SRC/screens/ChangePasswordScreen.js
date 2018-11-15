@@ -144,4 +144,3 @@ class SignUpScreen extends Component {
     }
 }
 export default SignUpScreen;
-
