@@ -150,17 +150,14 @@ class CollectionScreen extends Component {
                       </Left>
                       <Right>
                         <View style={{ flexDirection: "row" }}>
-                          <Button
+                          {/* <Button
                             style={{ padding: 10, backgroundColor: "#d91009" }}
-                            onPress={() =>
-                              this.props.navigation.navigate(
-                                "CollectionScreenCalender",
-                                {}
-                              )
-                            }
+                            onPress={() => {
+                this.props.navigation.navigate("TutorCalender");
+              }}
                           >
                             <Text style={{ color: "#fff" }}>Book Now</Text>
-                          </Button>
+                          </Button> */}
                           <Button
                             style={{
                               padding: 10,

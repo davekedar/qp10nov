@@ -103,11 +103,21 @@ class CalenderView extends Component {
                                 <Card key={tutor_dtl.id}>
                                 <CardItem>
                                         <Left>
-                                            <Text style={{ fontSize: Fonts.moderateScale(15), fontWeight: 'bold' }}> {tutor_dtl.tutor_name}</Text>
+                                            <Text style={{ fontSize: Fonts.moderateScale(15), fontWeight: 'bold' }}> {tutor_dtl.title}</Text>
                                         </Left>
                                         <Right>
                                         {tutor_dtl.status == '1' ? 
-                                                                (tutor_dtl.payment_status == '0' ? <Button onPress={()=>{this.props.navigation.navigate('PaymentScreen')}} style={{ padding: 10, backgroundColor: 'green', borderRadius: 40, height: 25 }}>
+                                                                (tutor_dtl.payment_status == '0' ? <Button 
+                                                                // onPress={()=>{this.props.navigation.navigate('Stripedemo')}} 
+                                                                onPress={() => {
+                      this.props.navigation.navigate("Stripedemo", {
+                        final_tution_price    :tutor_dtl.final_tution_price,
+                        tutor_id:tutor_dtl.tutor_id,
+                     
+                    });
+                      
+                    }}
+                                                                style={{ padding: 10, backgroundColor: 'green', borderRadius: 40, height: 25 }}>
                                                             <Text style={{ fontSize: Fonts.moderateScale(10), fontWeight: 'bold' }}>Pay Now</Text> 
                                                             
                                                         </Button> : <Button style={{ padding: 10, backgroundColor: tutor_dtl.status_color, borderRadius: 40, height: 25 }}>

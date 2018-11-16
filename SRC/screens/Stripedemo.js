@@ -44,13 +44,14 @@ class Stripedemo extends Component {
     errordata: [],
     payment_token: null,
     duration:null,
-    user:[]
+    user:[],
+    final_tution_price:null
   };
 
   componentWillMount = async () => {
     //this._showDateTimePicker;
     const { navigation } = this.props;
-    duration = navigation.getParam("duration");
+    this.state.final_tution_price = navigation.getParam("final_tution_price");
     const userid = await AsyncStorage.getItem('user_id');
 
         try {
@@ -118,7 +119,7 @@ class Stripedemo extends Component {
             console.log(this.state.user.email);
             this.state.payment_token = responseJson.id;
             var cardcharges = {
-              amount: duration*100*55,
+              amount: this.state.final_tution_price*100,
               currency: "gbp",
               source: this.state.payment_token,
               // source:"",
@@ -196,13 +197,16 @@ class Stripedemo extends Component {
   };
 
   render() {
+    const {goBack} = this.props.navigation;
+
     return (
       <Container>
         <Header style={styles.header}>
           <Left style={styles.left}>
             <TouchableOpacity
               style={styles.backArrow}
-              onPress={() => this.props.navigation.navigate("TutorCalender")}
+              // onPress={() => this.props.navigation.navigate("TutorCalender")}
+              onPress={() => goBack()}
             >
               <FontAwesome
                 name={I18nManager.isRTL ? "angle-right" : "angle-left"}
@@ -217,7 +221,7 @@ class Stripedemo extends Component {
       
         <View style={styles.logosec}>
           {/* <Image source={Logo} style={styles.logostyle} /> */}
-          <Text style={{fontWeight:"bold",fontSize:30,color:"#d91009"}}>Pay £{duration*55}</Text>
+          <Text style={{fontWeight:"bold",fontSize:30,color:"#d91009"}}>Pay £{this.state.final_tution_price}</Text>
           <Text style={{fontWeight:"bold",fontSize:30,color:"#d91009"}}>Enter Card Details</Text>
         </View>
         <Form style={styles.form}>

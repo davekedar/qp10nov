@@ -156,6 +156,7 @@ class SearchScreen extends Component {
               dataField={["first_name", "last_name", "tutor_experties"]}
               placeholder="Search for Tutors"
               autosuggest={false}
+              showIcon={false}
             />
              
 
@@ -226,7 +227,7 @@ class SearchScreen extends Component {
                     </Left>
                     <Right>
                       <View style={{ flexDirection: "row" }}>
-                        <Button
+                        {/* <Button
                           style={{ padding: 10, backgroundColor: "#d91009" }}
                           onPress={() =>
                             this.props.navigation.navigate(
@@ -236,7 +237,7 @@ class SearchScreen extends Component {
                           }
                         >
                           <Text style={{ color: "#fff" }}>Book Now</Text>
-                        </Button>
+                        </Button> */} 
                         <Button
                           style={{
                             padding: 10,
@@ -275,126 +276,6 @@ class SearchScreen extends Component {
           }}
         />
       </SafeAreaView>
-      //   {/* <SafeAreaView style={{ flex: 1 }}>
-      //     <View style={{ flex: 1 }}>
-      //       <ReactiveBase
-      //         app="qp"
-      //         credentials="jTlNh5TCo:158f2740-a132-48d8-8ad8-9e3928e4c48a"
-      //       >
-      //         <DataSearch
-      //           componentId="searchbox"
-      //           dataField={["first_name", "last_name", "tutor_experties"]}
-      //           placeholder="Search for Tutors"
-      //           autosuggest={false}
-      //         />
-      //         <ReactiveList
-      //           style={{ height: 1400 }}
-      //           componentId="results"
-      //           dataField="first_name"
-      //           showResultStats={false}
-      //           pagination={false}
-      //           loader="Loading Results.."
-      //           react={{
-      //             and: "searchbox"
-      //           }}
-      //           onData={res => (
-      //             <Card key={res.tutor_id} style={{ borderColor: "#d91009" }}>
-      //               <CardItem
-      //                 style={{ borderBottomWidth: 1, borderColor: "#d91009" }}
-      //               >
-      //                 <Left>
-      //                   <Thumbnail source={{ uri: res.profile_image }} />
-      //                   <Body>
-      //                     <Text style={{ width: 220 }}>
-      //                       {res.first_name} {res.last_name}
-      //                     </Text>
-      //                     <Button
-      //                       style={{
-      //                         padding: 10,
-      //                         backgroundColor: "#d91009",
-      //                         borderRadius: 40,
-      //                         height: 25
-      //                       }}
-      //                     >
-      //                       <Text
-      //                         style={{
-      //                           fontSize: Fonts.moderateScale(10),
-      //                           color: "#fff"
-      //                         }}
-      //                       >
-      //                         {res.tutor_experties_category}
-      //                       </Text>
-      //                     </Button>
-      //                   </Body>
-      //                 </Left>
-      //                 <Right>
-      //                   <TouchableOpacity
-      //                     onPress={() =>
-      //                       this.bookmark(res.tutor_id, this.state.student_id)
-      //                     }
-      //                   >
-      //                     <Icon2
-      //                       name={
-      //                         res.is_favourite_tutor == 1
-      //                           ? "bookmark"
-      //                           : "bookmark-o"
-      //                       }
-      //                       size={24}
-      //                       color="#d91009"
-      //                     />
-      //                   </TouchableOpacity>
-      //                 </Right>
-      //               </CardItem>
-      //               <CardItem
-      //                 cardBody
-      //                 style={{
-      //                   justifyContent: "center",
-      //                   alignItems: "center"
-      //                 }}
-      //               >
-      //                 <Text style={{ padding: 10 }}>{res.tutor_experties}</Text>
-      //               </CardItem>
-      //               <CardItem>
-      //                 <Left>
-      //                   <Text>Private Tuition £{res.price_per_h}</Text>
-      //                 </Left>
-      //                 <Right>
-      //                   <View style={{ flexDirection: "row" }}>
-      //                     <Button
-      //                       style={{ padding: 10, backgroundColor: "#d91009" }}
-      //                       onPress={() =>
-      //                         this.props.navigation.navigate(
-      //                           "SearchScreenCalender"
-      //                         )
-      //                       }
-      //                     >
-      //                       <Text style={{ color: "#fff" }}>Book Now</Text>
-      //                     </Button>
-      //                     <Button
-      //                       style={{
-      //                         padding: 10,
-      //                         backgroundColor: "#d91009",
-      //                         marginLeft: 5
-      //                       }}
-      //                       onPress={() =>
-      //                         this.props.navigation.navigate("TutorDetail", {
-      //                           tutor_id: res.tutor_id
-      //                         })
-      //                       }
-      //                     >
-      //                       <Text style={{ color: "#fff" }}>View Profile</Text>
-      //                     </Button>
-      //                   </View>
-      //                 </Right>
-      //               </CardItem>
-      //             </Card>
-      //           )}
-      //         />
-      //       </ReactiveBase>
-      //       }
-      //     </View>
-
-      //   </SafeAreaView> */}
     );
   }
 }

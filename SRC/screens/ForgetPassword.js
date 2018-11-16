@@ -21,12 +21,16 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import styles from "../Theme/Styles/Signin";
 import Logo from "../image/qualpros.png";
 import axios from 'axios';
+import AwesomeAlert from 'react-native-awesome-alerts';
+
 
 
 
 class ForgetPassword extends Component {
     static navigationOptions = {
-        header : null
+        header : null,
+        showAlert: false,
+        message: ''
     }   
     state = {
         showAlert : false,
@@ -45,13 +49,21 @@ class ForgetPassword extends Component {
           .then((response) => {
            
             if (response.data.data.status === 'success') {
-              alert(response.data.data.message)
+              //alert(response.data.data.message)
+              this.setState({
+                message: response.data.data.message,
+                showAlert: true,
+            })
               
-              this.props.navigation.navigate("Welcome")
+              //this.props.navigation.navigate("Welcome")
             } else {
-              console.log(response.data.data);
+              this.setState({
+                message: response.data.data.message,
+                showAlert: true,
+            })
+              //console.log(response.data.data);
              
-              alert(response.data.data.message)
+              //alert(response.data.data.message)
   
   
             }
@@ -61,6 +73,17 @@ class ForgetPassword extends Component {
       }
     
     }
+    showAlert = () => {
+      this.setState({
+        showAlert: true
+      });
+    };
+  
+    hideAlert = () => {
+      this.setState({
+        showAlert: false
+      });
+    };
 
   close = () => {
     this.setState({showAlert:false});
@@ -110,10 +133,23 @@ class ForgetPassword extends Component {
               </Text>
             </TouchableOpacity>
           </Form>
+          <AwesomeAlert
+                    show={this.state.showAlert}
+                    showProgress={false}
+                    title="QualPros!"
+                    message={this.state.message}
+                    closeOnTouchOutside={true}
+                    closeOnHardwareBackPress={false}
+                    showConfirmButton={true}
+                    confirmText="Ok"
+                    confirmButtonColor="#d91009"
+                    onConfirmPressed={() => {
+                      this.props.navigation.navigate("Welcome")
+                    }}
+                    />    
          
       </Container>
     );
   }
 }
 export default ForgetPassword;
-

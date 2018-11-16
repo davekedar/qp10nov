@@ -30,8 +30,11 @@ import styles1 from "../Theme/Styles/Signin";
 
 class CourseDetail extends Component {
     static navigationOptions = {
-        header: null
-    }
+        header: null,
+        showAlert: false,
+        message: ''
+        
+      }
     state = {
         tutor_id: null,
         course_details: [],
@@ -39,8 +42,8 @@ class CourseDetail extends Component {
         course_ratings_details: [],
         course_lesson_array: [],
         course_material_array: [],
-        showAlert: false,
-        message: '',
+      
+       
         isModalVisible: false,
         comments: null,
         selectedStarcount: null
@@ -87,7 +90,7 @@ class CourseDetail extends Component {
 
 
                     } else {
-                        console.log(response.data.data);
+                        // console.log(response.data.data);
 
 
 
@@ -116,23 +119,23 @@ class CourseDetail extends Component {
                 point: this.state.selectedStarcount,
                 comment: this.state.comments
             })
-                .then((response) => {
+                .then((result) => {
+                    console.log(result.data.data.status);
+                    if (result.data.data.status === 'success') {
 
-                    if (response.data.data.status === 'success') {
-
-                        this.setState({
-                            message: response.data.data.message,
-                            showAlert: true,
-                            isModalVisible: false
-                        })
+                            this.setState({
+                                message: result.data.data.message,
+                                showAlert: true,
+                                isModalVisible: false
+                            })
 
 
 
                     } else {
-                        console.log(response.data.data);
+                        // console.log(response.data.data);
 
                         this.setState({
-                            message: response.data.data.message,
+                            message: result.data.data.message,
                             showAlert: true,
                             isModalVisible: false
                         })
@@ -142,12 +145,12 @@ class CourseDetail extends Component {
                 })
         }
         catch (err) {
-            console.log(err)
-            this.setState({
-                message: response.data.data.message,
-                showAlert: true,
-                isModalVisible: false
-            })
+            // console.log(err)
+            // this.setState({
+            //     message: response.data.data.message,
+            //     showAlert: true,
+            //     isModalVisible: false
+            // })
         }
 
     }
@@ -173,6 +176,7 @@ class CourseDetail extends Component {
     };
 
     render() {
+        const {goBack} = this.props.navigation;
 
         return (
 
@@ -182,7 +186,8 @@ class CourseDetail extends Component {
                     <Left style={styles.left}>
                         <TouchableOpacity
                             style={styles.backArrow}
-                            onPress={() => this.props.navigation.navigate("SearchScreen")}
+                            onPress={() => goBack()}
+                            // onPress={() => this.props.navigation.navigate("SearchScreen")}
                         >
                             <FontAwesome
                                 name="angle-left"
@@ -192,7 +197,7 @@ class CourseDetail extends Component {
                         </TouchableOpacity>
                     </Left>
                     <Body>
-                        <Text style={{ alignSelf: Platform.OS == 'android' ? 'center' : null, fontSize: 17, color: '#fff' }}>Book an online course</Text>
+                        <Text style={{ alignSelf: Platform.OS == 'android' ? 'center' : null, fontSize: 17, color: '#fff' }}>Book a Course</Text>
                     </Body>
                     <Right />
                 </Header>
@@ -306,7 +311,7 @@ class CourseDetail extends Component {
                                                                                 //maxStars={}
                                                                                 rating={this.state.selectedStarcount}
                                                                                 starSize={25}
-                                                                                halfStarEnabled='true'
+                                                                                halfStarEnabled
                                                                                 fullStarColor='#d91009'
                                                                                 //selectedStar={(rating) => this.onStarRatingPress(rating)}
                                                                                 selectedStar={(rating) => this.onStarRating(rating)}
@@ -359,7 +364,7 @@ class CourseDetail extends Component {
                             </Left>
                             <Right>
                                 <Button bordered danger>
-                                    <Text>Book Now</Text>
+                                    <Text>Buy Now</Text>
                                 </Button>
                             </Right>
                         </CardItem>
@@ -448,8 +453,18 @@ class CourseDetail extends Component {
                                                     <Text >
                                                         {course_rate.name}
 </Text>
-
-                                                        <StarRating
+<StarRating
+                                        style={{ width: 220 }}
+                                        disabled={false}
+                                                            maxStars={5}
+                                                            rating={course_rate.point}
+                                                            starSize={12}
+                                                            halfStarEnabled='true'
+                                                            fullStarColor='#d91009'
+                                        //selectedStar={(rating) => this.onStarRatingPress(rating)}
+                                        />
+                                                        {/* <StarRating
+                                                         style={{ width: 100 }}
                                                             disabled={false}
                                                             maxStars={5}
                                                             rating={course_rate.point}
@@ -457,7 +472,8 @@ class CourseDetail extends Component {
                                                             halfStarEnabled='true'
                                                             fullStarColor='#d91009'
 
-                                                        />
+                                                        /> */}
+                                                      
                                                     
                                                     <Text note>{course_rate.comment}</Text>
                                                 </Body>

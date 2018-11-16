@@ -92,6 +92,8 @@ class TutorCalender extends Component {
         this._hideDateTimePicker();
     };
     render() {
+        const {goBack} = this.props.navigation;
+
         return (
             <Container>
                 <Header style={{ backgroundColor: '#d91009' }}>
@@ -99,7 +101,8 @@ class TutorCalender extends Component {
                     <Left style={styles.left}>
                         <TouchableOpacity
                             style={styles.backArrow}
-                            onPress={() => this.props.navigation.navigate("ChatBox")}
+                            onPress={() => goBack()}
+                            // onPress={() => this.props.navigation.navigate("ChatBox")}
                         >
                             <FontAwesome
                                 name="angle-left"

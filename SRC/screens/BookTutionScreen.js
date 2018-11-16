@@ -35,7 +35,8 @@ import AwesomeAlert from "react-native-awesome-alerts";
 class BookTutionScreen extends Component {
   static navigationOptions = {
     header: null,
-    showAlert: false
+    showAlert: false,
+    message: ''
   };
   state = {
     isDateTimePickerVisible: false,
@@ -45,7 +46,8 @@ class BookTutionScreen extends Component {
     yy: null,
     bookdatetime: null,
     selectedtime: null,
-    description: null
+    description: null,
+    screen:null
   };
 
   _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
@@ -95,11 +97,23 @@ class BookTutionScreen extends Component {
         })
         .then(response => {
           if (response.data.data.status === "success") {
-            alert(response.data.data.message);
-            this.props.navigation.navigate("TutorCalender");
+            //alert(response.data.data.message);
+            this.state.screen = "CalenderView" 
+            console.log( this.state.screen);
+            this.setState({
+              message: response.data.data.message,
+              showAlert: true,
+          })
+            //this.props.navigation.navigate("CalenderView");
           } else {
-            console.log(response.data.data);
-            alert(response.data.data.message);
+            
+            //alert(response.data.data.message);
+            this.state.screen = "BookTutionScreen"
+            console.log( this.state.screen);
+            this.setState({
+              message: response.data.data.message,
+              showAlert: true,
+          })
           }
         });
     } catch (err) {
@@ -176,9 +190,30 @@ class BookTutionScreen extends Component {
                   color="#d91009"
                 />
               </Button>
+              <View><Text>{this.state.bookdatetime}</Text></View>
             </Item>
 
             <View style={{ flex: 1, flexDirection: "row" }}>
+              {/* <View>
+                <Button
+                  style={{ marginTop: 5, marginLeft: 9 }}
+                  bordered
+                  info
+                  // onPress={() => {
+                  //     this.showAlert();
+                  // }}
+                  onPress={() => this.props.navigation.navigate("Paypaldemo")}
+                >
+                  <Text>
+                    <Icon1
+                      style={{ marginTop: 5, marginLeft: 11 }}
+                      active
+                      name="cc-paypal"
+                      size={24}
+                    />
+                  </Text>
+                </Button>
+              </View> */}
               <View>
               <Button
                     style={{
@@ -187,14 +222,15 @@ class BookTutionScreen extends Component {
                       marginLeft: 5,
                       marginTop:5
                     }}
-                    onPress={() => {
-                    /* 1. Navigate to the Details route with params */
-                    this.props.navigation.navigate("Stripedemo", {
-                      duration:this.state.duration
-                    });
-                  }}
+                    onPress={this.bookNow}
+                  //   onPress={() => {
+                  //   /* 1. Navigate to the Details route with params */
+                  //   this.props.navigation.navigate("Stripedemo", {
+                  //     duration:this.state.duration
+                  //   });
+                  // }}
                   >
-                    <Text style={{ color: "#fff" }}>Pay Now</Text>
+                    <Text style={{ color: "#fff" }}>Book Now</Text>
                   </Button>
                 
               </View>
@@ -222,7 +258,7 @@ class BookTutionScreen extends Component {
           show={this.state.showAlert}
           showProgress={false}
           title="QualPros!"
-          message="Thank you for payment"
+          message={this.state.message}
           closeOnTouchOutside={true}
           closeOnHardwareBackPress={false}
           showConfirmButton={true}
@@ -230,6 +266,7 @@ class BookTutionScreen extends Component {
           confirmButtonColor="#d91009"
           onConfirmPressed={() => {
             this.hideAlert();
+            this.props.navigation.navigate(this.state.screen)
           }}
         />
       </Container>

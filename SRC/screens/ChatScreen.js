@@ -78,16 +78,15 @@ class ChatScreen extends Component {
                     onPress={() => {
                       this.props.navigation.navigate("ChatBox", {
                       group_id:group.groupId,
-                     groupName:group.groupName,
-                     groupType:group.groupType,
+                      groupName:group.groupName,
+                      groupType:group.groupType,
                     });
                       
                     }}
                   >
                     <Left>
-                    {group.group_type === '1' ?
-                    <Thumbnail source={{uri : group.groupImage}} /> :
-                      <Thumbnail source={group_img} /> }
+                    {group.group_type === '0' ?
+                    <Thumbnail source={group_img} /> : <Thumbnail source={{uri : group.groupImage[0]}} />}
                     </Left>
                     <Body>
                       <Text> {group.groupName}</Text>

@@ -30,23 +30,24 @@ import ViewMoreText from "react-native-view-more-text";
 import Modal from "react-native-modal";
 
 import Video from "react-native-af-video-player";
+import video_img from "../image/qualpros.png";
 
 class TutorDetail extends Component {
   static navigationOptions = {
     header: null
   };
-  static navigationOptions = ({ navigation }) => {
-    const { state } = navigation;
-    // Setup the header and tabBarVisible status
-    const header = state.params && (state.params.fullscreen ? undefined : null);
-    const tabBarVisible = state.params ? state.params.fullscreen : true;
-    return {
-      // For stack navigators, you can hide the header bar like so
-      header,
-      // For the tab navigators, you can hide the tab bar like so
-      tabBarVisible
-    };
-  };
+  // static navigationOptions = ({ navigation }) => {
+  //   const { state } = navigation;
+  //   // Setup the header and tabBarVisible status
+  //   const header = state.params && (state.params.fullscreen ? undefined : null);
+  //   const tabBarVisible = state.params ? state.params.fullscreen : true;
+  //   return {
+  //     // For stack navigators, you can hide the header bar like so
+  //     header,
+  //     // For the tab navigators, you can hide the tab bar like so
+  //     tabBarVisible
+  //   };
+  // };
   state = {
     tutor_id: null,
     tutors: [],
@@ -173,13 +174,12 @@ class TutorDetail extends Component {
   }
 
   render() {
-    const url =
-      "https://qualpros-bucket.s3.eu-west-2.amazonaws.com/profiles/Krutika-Adatia.mp4";
-    const logo =
-      "https://chat.qualpros.com/images/profiles/thumb/t5PEQwWMgXXa5OVH9ZOa.jpg";
+    
+    const logo = 
+    "../image/qualpros.png";
     const placeholder =
-      "https://chat.qualpros.com/images/profiles/thumb/t5PEQwWMgXXa5OVH9ZOa.jpg";
-    const title = "My video title";
+    "../image/qualpros.png";
+    const title = "Profile Video";
 
     return (
       <Container>
@@ -200,7 +200,7 @@ class TutorDetail extends Component {
                 color: "#fff"
               }}
             >
-              Book A Private Tuition
+              Tutor Detail
             </Text>
           </Body>
           <Right />
@@ -225,48 +225,21 @@ class TutorDetail extends Component {
                   <Right />
                 </CardItem>
                 <View> 
+                {tutor.tutor_profile_video === "" ? null :
                 <Video
                         //autoPlay
-                        url={url}
-                        title={title}
-                        logo={logo}
-                        placeholder={placeholder}
-                        onMorePress={() => this.onMorePress()}
+                        url={tutor.tutor_profile_video}
+                        title={tutor.first_name}
+                        logo={tutor.profile_image}
+                        placeholder={tutor.profile_image}
+                        //onMorePress={() => this.onMorePress()}
                         onFullScreen={status => this.onFullScreen(status)}
                         //fullScreenOnly
+                        rotateToFullScreen
+                        lockPortraitOnFsExit
                       />
-                  {/* <Button
-                    style={{
-                      padding: 10,
-                      backgroundColor: "#d91009",
-                      marginLeft: 5
-                    }}
-                    onPress={this._toggleModal}
-                  >
-                    <Text style={{ color: "#fff" }}>View Profile Video</Text>
-                  </Button>
-                  <Modal isVisible={this.state.isModalVisible}>
-                    <View>
-                    <View style={{alignItems: 'flex-end'}}>
-                      <TouchableOpacity onPress={this._toggleModal}>
-                          <Text style={{ color: "#fff" }}><Icon2 name="times-circle" size={24} color="#fff" /></Text>
-                        </TouchableOpacity>
-                      </View>
-                       
-                     
-
-                      <Video
-                        //autoPlay
-                        url={url}
-                        title={title}
-                        logo={logo}
-                        placeholder={placeholder}
-                        onMorePress={() => this.onMorePress()}
-                        onFullScreen={status => this.onFullScreen(status)}
-                        //fullScreenOnly
-                      />
-                    </View>
-                  </Modal> */}
+                }
+                  
                   
                 </View>
                 <CardItem />

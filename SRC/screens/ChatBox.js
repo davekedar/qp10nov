@@ -24,7 +24,6 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Icon1 from "react-native-vector-icons/FontAwesome";
 import axios from "axios";
-import Hyperlink from 'react-native-hyperlink'
 
 export default class ChatBox extends Component {
   static navigationOptions = {
@@ -37,42 +36,6 @@ export default class ChatBox extends Component {
     typedText:null
 
   };
- 
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     data: [
-  //       {
-  //         id: "1",
-  //         date: "9:50 am",
-  //         type: "out",
-  //         message:
-  //           "Hello Krutika, can you help me with a tricky past paper question? "
-  //       },
-  //       {
-  //         id: "2",
-  //         date: "9:51 am",
-  //         type: "in",
-  //         message:
-  //           "Hello Michael, yes of course. Which paper are you struggling with and when would you like to start?"
-  //       },
-  //       {
-  //         id: "3",
-  //         date: "9:55 am",
-  //         type: "out",
-  //         message:
-  //           "Please can we start this weekend? I would like you to help me with the 2018 paper. "
-  //       },
-  //       {
-  //         id: "4",
-  //         date: "9:57 am",
-  //         type: "in",
-  //         message:
-  //           "Yes. I am available on weekends. Please book a private tuition session."
-  //       }
-  //     ]
-  //   };
-  // }
 
   renderDate = date => {
     return <Text style={styles.time}>{date}</Text>;

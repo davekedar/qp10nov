@@ -13,7 +13,7 @@ import axios from 'axios';
 class ProfileScreen extends Component {
     state = {
         user: [],
-        
+        notification : true
     }
     componentWillMount = async () => {
         const username = await AsyncStorage.getItem('username');
@@ -28,6 +28,7 @@ class ProfileScreen extends Component {
                   if (response.data.data.status === 'success') {
                 
                     this.setState({ user: response.data.data.student_info })
+                    this.setState({notification : notification_setting})
                    
                   } else {
                     console.log(response.data.data);
@@ -47,6 +48,14 @@ class ProfileScreen extends Component {
         //console.log('sdfds');
         AsyncStorage.clear()
         this.props.navigation.navigate('AuthLoading')
+    }
+
+    notificaton = async() => {
+        if (this.state.notification === true) {
+            this.setState({notification : false})
+        } else {
+            this.setState({notification : true})
+        }
     }
 
     render() {
@@ -165,6 +174,22 @@ class ProfileScreen extends Component {
                         </Body>
                         <Right>
                             <Icon active name="arrow-forward" />
+                        </Right>
+                    </ListItem>
+                    <ListItem icon onPress={()=> alert('clicked')}>
+                        <Left>
+                            <Button style={{ backgroundColor: "#fff" }}>
+                                <Icon2 active name="md-power" size={24} color='#A9A9A9' />
+                            </Button>
+                        </Left>
+                        <Body>
+                            <Text>Notification</Text>
+                        </Body>
+                        <Right>
+                            <Switch 
+                                onValueChange={()=>{this.notificaton}}
+                                value={this.state.notification}
+                                ios_backgroundColor='#d91009' />
                         </Right>
                     </ListItem>
                   

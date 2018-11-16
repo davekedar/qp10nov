@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   I18nManager,
   AsyncStorage,
+  Platform
 } from "react-native";
 import {
   Container,
@@ -15,7 +16,6 @@ import {
   Header,
   Left,
   Body,
-  
   Title,
   Form
 } from "native-base";
@@ -26,14 +26,14 @@ import styles from "../Theme/Styles/Signin";
 import Logo from "../image/qualpros.png";
 import axios from 'axios';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import OneSignal from 'react-native-onesignal';
 
 class SignInScreen extends Component {
   
-
   static navigationOptions = {
     header: null,
     showAlert: false,
-    message: ''
+    message: '',
     
   }
 
@@ -41,6 +41,7 @@ class SignInScreen extends Component {
     data: [],
     email: null,
     password: null,
+    //device_id: null,    
   }
 
 componentWillMount() {
@@ -50,6 +51,7 @@ componentWillMount() {
   OneSignal.addEventListener("received", this.onReceived);
   OneSignal.addEventListener("opened", this.onOpened);
   OneSignal.addEventListener("ids", this.onIds);
+  
 }
 componentWillUnmount() {
   OneSignal.removeEventListener("received", this.onReceived);
@@ -68,9 +70,14 @@ onOpened(openResult) {
   console.log("openResult: ", openResult);
 }
 
-onIds(device) {
-  console.log("Device info: ", device);
+onIds = async (device) => {
+  console.log("Device info: ", device.userId);
+  let playerid = device.userId;
+  //await AsyncStorage.setItem('playerid', playerid);
+  this.setState({device_id: playerid})
+  //alert(playerid);
 }
+
   constructor(props) {
     super(props);
     this.state = { showAlert: false };
@@ -88,19 +95,15 @@ onIds(device) {
     });
   };
 
-
-
-  
-
-
   signIn = async () => {
-    
-    
+    let device_type = (Platform.OS === 'ios') ? 'ios' : 'android' 
     try {
       let { data } = await axios.post('https://chat.qualpros.com/api/login', {
         email: this.state.email,
         password: this.state.password,
-        
+        //device_id: this.state.device_id,
+        device_id: '123test',
+        device_type: device_type
       })
         .then((response) => {
           
