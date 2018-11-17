@@ -1,20 +1,19 @@
 import React, { Component } from "react";
-import { StyleSheet, Platform, ScrollView, AsyncStorage } from "react-native";
+import { StyleSheet, Platform, ScrollView, AsyncStorage, FlatList, View } from "react-native";
 import {
   Container,
   Header,
   Content,
-  List,
-  ListItem,
   Left,
   Body,
   Right,
   Thumbnail,
   Text
 } from "native-base";
-import Tutor from "../image/krutika.jpg";
+//import Tutor from "../image/krutika.jpg";
 import axios from "axios";
 import group_img from "../image/group_img.png";
+import {ListItem, List} from 'react-native-elements';
 
 class ChatScreen extends Component {
   state = {
@@ -23,6 +22,7 @@ class ChatScreen extends Component {
   };
   componentWillMount = () => {
     this.loading();
+    
   };
 
   loading = async () => {
@@ -32,12 +32,10 @@ class ChatScreen extends Component {
     try {
       let { data } = await axios
         .get(
-          "https://www.qualpros.com/chat/imApi/getGroups?limit=10&start=0&userId=62",
+          "https://www.qualpros.com/chat/imApi/getGroups?limit=100&start=0&userId="+userid,
           {
             params: {
-              limit: 10,
-              start: 0,
-              iserid: 62
+              
             }
           }
         ) 
@@ -52,6 +50,19 @@ class ChatScreen extends Component {
       console.log(err);
     }
   };
+
+  renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "100%",
+          backgroundColor: "#CED0CE",
+        }}
+      />
+    );
+  };
+
   render() {
     return (
       <Container>
@@ -69,39 +80,31 @@ class ChatScreen extends Component {
           </Body>
         </Header>
         <ScrollView>
-          {this.state.groups.map(group => {
-            return (
-              <Content key={group.groupId}>
-                <List>
-                  <ListItem
-                    avatar
-                    onPress={() => {
-                      this.props.navigation.navigate("ChatBox", {
-                      group_id:group.groupId,
-                      groupName:group.groupName,
-                      groupType:group.groupType,
-                    });
-                      
-                    }}
-                  >
-                    <Left>
-                    {group.group_type === '0' ?
-                    <Thumbnail source={group_img} /> : <Thumbnail source={{uri : group.groupImage[0]}} />}
-                    </Left>
-                    <Body>
-                      <Text> {group.groupName}</Text>
-                      {<Text note>
-                        Yes I am available on Weekends for personal Tuitions
-                      </Text> }
-                    </Body>
-                    <Right>
-                      <Text>3:43 pm</Text>
-                    </Right>
-                  </ListItem>
+            <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}>
+                  <FlatList
+                    data={this.state.groups}
+                    renderItem={({ item }) => (
+                      <ListItem
+                        // roundAvatar
+                        title={item.groupName}
+                        subtitle={item.mainRecentMessage}
+                        avatar={item.groupType == '0' ?
+                          <Thumbnail source={group_img} /> : <Thumbnail source={{uri : item.groupImage[0]}} />}
+                        containerStyle={{ borderBottomWidth: 0 }}
+                        onPress={()=>this.props.navigation.navigate('ChatBox', {
+                        groupId: item.groupId.toString(),
+                        group_im: item.groupImage[0],
+                        groupName: item.groupName,
+                        group_type: item.groupType,
+                        
+                        })}
+                      />
+                    )}
+                    keyExtractor={item => item.groupId.toString()}
+                    ItemSeparatorComponent={this.renderSeparator}
+                    // onRefresh={this.loading()}
+                  />
                 </List>
-              </Content>
-            );
-          })}
         </ScrollView>
       </Container>
     );
@@ -114,5 +117,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center"
+  },
+  chatText: {
+    fontSize : 16,
+    color: 'grey',
+    marginLeft: 5
   }
 });

@@ -17,6 +17,7 @@
     "react-native-af-video-player": "^0.2.1",
     "react-native-awesome-alerts": "^1.1.1",
     "react-native-calendars": "^1.21.0",
+    "react-native-elements": "^0.19.1",
     "react-native-keyboard-aware-scroll-view": "0.7.2",
     "react-native-modal": "^6.5.0",
     "react-native-modal-datetime-picker": "^6.0.0",

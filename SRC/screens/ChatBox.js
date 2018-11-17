@@ -24,6 +24,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Icon1 from "react-native-vector-icons/FontAwesome";
 import axios from "axios";
+import group_img from "../image/group_img.png";
 
 export default class ChatBox extends Component {
   static navigationOptions = {
@@ -32,21 +33,33 @@ export default class ChatBox extends Component {
   state = {
     group_msgs: [],
     student_id: null,
-    groupType:null,
-    typedText:null
-
+    groupType: null,
+    typedText: null,
+    groupId: null,
+    group_img1: null,
+    groupName: null,
+    group_type: null
   };
 
   renderDate = date => {
     return <Text style={styles.time}>{date}</Text>;
   };
 
-  componentWillMount = () => {
+  componentWillMount = async () => {
     this.loading();
-    const { navigation } = this.props;
-    groupName = navigation.getParam("groupName");
-    group_id = navigation.getParam("group_id");
-    groupType = navigation.getParam("groupType");
+    const {
+      groupId,
+      group_im,
+      groupName,
+      group_type
+    } = this.props.navigation.state.params;
+    await this.setState({
+      groupId: groupId,
+      group_img1: group_im,
+      groupName: groupName,
+      group_type: group_type
+    });
+    //console.log(group_img1);
   };
 
   loading = async () => {
@@ -54,34 +67,67 @@ export default class ChatBox extends Component {
     this.state.student_id = userid;
 
     try {
-      let { data } = await axios.get('https://www.qualpros.com/chat/imApi/getMessage?groupId=6&limit=10&start=0&userId=62').then(response => {
+      let { data } = await axios
+        .get(
+          "https://www.qualpros.com/chat/imApi/getMessage?groupId=" +
+            this.state.groupId +
+            "&limit=10&start=0&userId="+userid
+        )
+        .then(response => {
           //  console.log(response)
           if (response.status == 200) {
-             this.setState({ group_msgs: response.data.response });
-              console.log(response.data.response)
+            this.setState({ group_msgs: response.data.response });
+            console.log(this.state.group_msgs.sender);
           } else {
           }
         });
     } catch (err) {
       console.log(err);
     }
+    console.log(this.state.group_img1);
   };
   reset = async () => {
-    this.setState({searchText: ''})
-}
-getInitialState=function () {
-  return {
-    searchText: ''
-  }
-}
+    this.setState({ searchText: "" });
+  };
+  getInitialState = function() {
+    return {
+      searchText: ""
+    };
+  };
 
-
-onSubmitEditing = async () => {
-  // console.log('dfd')
+  onSubmitEditing = async () => {
+    try {
+      var formcardBody = [];
+      formcardBody.push( "groupId=" + this.state.groupId);
+      formcardBody.push( "message=" + this.state.typedText);
+      formcardBody.push( "userId=" + this.state.student_id);
+      formcardBody = formcardBody.join("&");
+      let {data} = await fetch("https://www.qualpros.com/chat/imApi/sendMessage", {
+        method: "post",
+        body: formcardBody,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
+        }
+      })
+      
+        .then(response => {
+          console.log(response)
+          if (response.status == 200) {
+            this.loading();
+          } else {
+          }
+        });
+    } catch (error) {
+      console.log(error.response);
+    }
+    console.log(this.state.groupId);
+    console.log(this.state.typedText);
+    console.log(this.state.student_id);
     this.setState({
-        typedText:"",
-    })
-}
+      typedText: ""
+    });
+  };
   render() {
     return (
       <Container>
@@ -94,70 +140,76 @@ onSubmitEditing = async () => {
               <FontAwesome name="angle-left" size={30} color="#fff" />
             </TouchableOpacity>
 
-            <Thumbnail
-              source={Tutor}
-              style={{
-                marginLeft: 8,
-                width: 30,
-                height: 30,
-                borderRadius: 30 / 2
-              }}
-            />
+            {this.state.group_type == "0" ? (
+              <Thumbnail style={styles.thumbnail} source={group_img} />
+            ) : (
+              <Thumbnail
+                style={styles.thumbnail}
+                source={{ uri: this.state.group_img1 }}
+              />
+            )}
           </Left>
           <Body>
-           
-              <Text 
-               onPress={() => {
-                   
-                    this.props.navigation.navigate("Groupmembers", {
-                      group_id:group_id,
-                      groupname:groupName,
-                    });
-                  }}
-                style={{
-                  alignSelf: Platform.OS == "android" ? "center" : null,
-                  fontSize: 17,
-                  color: "#fff"
-                }}
-              >
-                {groupName}
-              </Text>
-            
-          </Body>
-          <Right>
-          {groupType == '1' ?
-            <Button
-              style={{ backgroundColor: "#d91009" }}
+            {this.state.group_type == "0" ? 
+            <Text
               onPress={() => {
-                this.props.navigation.navigate("TutorCalender");
+                this.props.navigation.navigate("Groupmembers", {
+                  group_id: this.state.groupId,
+                  groupName: this.state.groupName,
+                });
+              }}
+              style={{
+                alignSelf: Platform.OS == "android" ? "center" : null,
+                fontSize: 17,
+                color: "#fff"
               }}
             >
-         
-              <Icon1 active name="calendar" size={24} color="#FFF" onPress={this.clearText} />
-            </Button>
-            : null 
-         }
+              {this.state.groupName}
+            </Text>
+            : <Text>{this.state.groupName}</Text> }
+          </Body>
+          <Right>
+            {this.state.group_type == "1" ? (
+              <Button
+                style={{ backgroundColor: "#d91009" }}
+                onPress={() => {
+                  this.props.navigation.navigate("TutorCalender");
+                }}
+              >
+                <Icon1
+                  active
+                  name="calendar"
+                  size={24}
+                  color="#FFF"
+                  onPress={this.clearText}
+                />
+              </Button>
+            ) : null}
           </Right>
         </Header>
         <View style={styles.container}>
           <FlatList
+            ref={ref => this.flatList = ref}
+            onContentSizeChange={() => this.flatList.scrollToEnd({animated: true})}
+            onLayout={() => this.flatList.scrollToEnd({animated: true})}
             style={styles.list}
             data={this.state.group_msgs}
             keyExtractor={item => {
-              return item.message.m_id;
+              return item.message.m_id.toString();
             }}
             renderItem={message => {
               const item = message.item;
               console.log(item.message.sender);
-              let inMessage = (item.message.sender === '62') ? 'out' : 'in';
-              let itemStyle = (inMessage === 'in') ? styles.itemIn : styles.itemOut;
+              let inMessage = item.message.sender === this.state.student_id ? "out" : "in";
+              let itemStyle =
+                inMessage === "in" ? styles.itemIn : styles.itemOut;
               return (
                 <View style={[styles.item, itemStyle]}>
-                  
-                  {item.message.type === 'text'? <View style={[styles.balloon]}><Text>{item.message.message}</Text></View>:
-                  null
-                  }
-                  
+                  {item.message.type === "text" ? (
+                    <View style={[styles.balloon]}>
+                      <Text>{item.message.message}</Text>
+                    </View>
+                  ) : null}
                 </View>
               );
             }}
@@ -168,15 +220,22 @@ onSubmitEditing = async () => {
                 style={styles.inputs}
                 placeholder="Write a message..."
                 underlineColorAndroid="transparent"
-                onChangeText={(typedText)=>this.setState({
+                onChangeText={typedText =>
+                  this.setState({
                     typedText
-                })}
-                value={this.state.typedText === ''  ? null : this.state.typedText}
-
-               
+                  })
+                }
+                value={
+                  this.state.typedText
+                }
               />
-              
-                 <Ionicons name="md-send" size={30} color='#d91009' onPress={(this.onSubmitEditing)}/>
+
+              <Ionicons
+                name="md-send"
+                size={30}
+                color="#d91009"
+                onPress={this.onSubmitEditing}
+              />
             </View>
 
             {/* <TouchableOpacity style={styles.btnSend}>
@@ -259,5 +318,11 @@ const styles = StyleSheet.create({
 
     borderRadius: 300,
     padding: 1
+  },
+  thumbnail: {
+    width: 40,
+    height: 40,
+    borderRadius: 30 / 2,
+    marginLeft: 8
   }
 });

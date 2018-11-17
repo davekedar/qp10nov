@@ -52,9 +52,9 @@ class ProfileScreen extends Component {
 
     notificaton = async() => {
         if (this.state.notification === true) {
-            this.setState({notification : false})
+            this.setState({notification : '0'})
         } else {
-            this.setState({notification : true})
+            this.setState({notification : '1'})
         }
     }
 
@@ -176,7 +176,7 @@ class ProfileScreen extends Component {
                             <Icon active name="arrow-forward" />
                         </Right>
                     </ListItem>
-                    <ListItem icon onPress={()=> alert('clicked')}>
+                    {/* <ListItem icon onPress={()=> alert('clicked')}>
                         <Left>
                             <Button style={{ backgroundColor: "#fff" }}>
                                 <Icon2 active name="md-power" size={24} color='#A9A9A9' />
@@ -191,7 +191,7 @@ class ProfileScreen extends Component {
                                 value={this.state.notification}
                                 ios_backgroundColor='#d91009' />
                         </Right>
-                    </ListItem>
+                    </ListItem> */}
                   
                 </Content>
             </Container>

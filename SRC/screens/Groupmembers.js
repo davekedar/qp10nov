@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-import { StyleSheet,TouchableOpacity, Platform, ScrollView, AsyncStorage } from "react-native";
+import { StyleSheet,TouchableOpacity, Platform, ScrollView, AsyncStorage, FlatList, View } from "react-native";
 import {
   Container,
   Header,
   Content,
-  List,
-  ListItem,
   Left,
   Body,
   Right,
@@ -15,6 +13,7 @@ import {
 import group_img from "../image/group_img.png";
 import axios from "axios";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import {ListItem, List} from 'react-native-elements';
 
 class Groupmembers extends Component {
     static navigationOptions = {
@@ -36,7 +35,7 @@ class Groupmembers extends Component {
     this.state.student_id = userid;
 
     try {
-      let { data } = await axios.get('https://www.qualpros.com/chat/imApi/getMembers?groupId=40&userId=4').then(response => {
+      let { data } = await axios.get('https://www.qualpros.com/chat/imApi/getMembers?groupId='+group_id+'&userId='+userid).then(response => {
         //    console.log(response)
           if (response.status == 200) {
              this.setState({ group_members: response.data.response.memberList });
@@ -48,6 +47,19 @@ class Groupmembers extends Component {
       console.log(err);
     }
   };
+
+  renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "100%",
+          backgroundColor: "#CED0CE",
+        }}
+      />
+    );
+  };
+
   render() {
     return (
       <Container>
@@ -78,7 +90,25 @@ class Groupmembers extends Component {
           </Right>
         </Header>
         <ScrollView>
-          {this.state.group_members.map(group => {
+            <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}>
+                      <FlatList
+                        data={this.state.group_members}
+                        renderItem={({ item }) => (
+                          <ListItem
+                            roundAvatar
+                            title={item.firstName + " " +item.lastName}
+                            subtitle={item.mainRecentMessage}
+                            avatar = {item.profilePictureUrl}
+                            containerStyle={{ borderBottomWidth: 0 }}
+                            chevronColor="white"
+                          />
+                        )}
+                        keyExtractor={item => item.userId.toString()}
+                        ItemSeparatorComponent={this.renderSeparator}
+                        // onRefresh={this.loading()}
+                      />
+                    </List>
+          {/* {this.state.group_members.map(group => {
             return (
               <Content key={group.userId}>
                 <List>
@@ -91,7 +121,7 @@ class Groupmembers extends Component {
                      
                     </Left>
                     <Body>
-                      <Text> {group.firstName}{group.lastName}</Text>
+                      <Text> {group.firstName} {group.lastName}</Text>
                       <Text note>
                         Yes I am available on Weekends for personal Tuitions
                       </Text>
@@ -103,7 +133,7 @@ class Groupmembers extends Component {
                 </List>
               </Content>
             );
-          })}
+          })} */}
         </ScrollView>
       </Container>
     );
