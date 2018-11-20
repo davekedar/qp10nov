@@ -34,17 +34,38 @@ import styles from "../Theme/Styles/Signin";
 import Logo from "../image/qualpros.png";
 import axios from 'axios';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import AwesomeAlert from 'react-native-awesome-alerts';
+import Spinner from 'react-native-loading-spinner-overlay';
+
+
 
 class SignUpScreen extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
+    showAlert: false,
+    message: '',
   }
+  state = {
+   
+    spinner: null
   
+  }
+  showAlert = () => {
+    this.setState({
+      showAlert: true
+    });
+  };
+
+  hideAlert = () => {
+    this.setState({
+      showAlert: false
+    });
+  };
 
   signIn = async () => {
-    
+    this.state.spinner=true
     try {
-      let { data } = await axios.post('https://chat.qualpros.com/api/student_register', {
+      let { data } = await axios.post('https://www.qualpros.com/api/student_register', {
        
         first_name: this.state.first_name,
         last_name: this.state.last_name,
@@ -54,13 +75,21 @@ class SignUpScreen extends Component {
 
       })
         .then((response) => {
+          this.state.spinner=false
           if (response.data.data.status === 'success') {
             this.setState({ data: response.data.data })
-            alert(response.data.data.message)
-            this.props.navigation.navigate("WelcomeScreen")
+            this.setState({
+              message: response.data.data.message,
+              showAlert: true,
+          })
+           
           } else {
-            console.log(response.data.data);
-            alert(response.data.data.message)
+            console.log(response.data.data); 
+             this.setState({
+              message: response.data.data.message,
+              showAlert: true,
+          })
+            //alert(response.data.data.message)
 
           }
         })
@@ -96,7 +125,13 @@ class SignUpScreen extends Component {
           <View style={styles.signuplogosec}>
             <Image source={Logo} style={styles.signuplogostyle} />
           </View>
-
+          <Spinner
+              color={"black"}
+          visible={this.state.spinner}
+          textContent={'Please wait...'}
+          textStyle={styles1.spinnerTextStyle}
+          animation={'slide'}
+        />
           <Form
             style={Platform.OS == 'android' ? styles.androidform : styles.form}
           >
@@ -172,9 +207,9 @@ class SignUpScreen extends Component {
           <View
             style={Platform.OS == 'android' ? styles.signupbottomViewandroid : styles.signupbottomView}
           >
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styles.fbButton}
-              onPress={() => alert("Facebook button Clicked")}
+              onPress={this.signIn}
             >
               <View iconRight style={styles.fbview}>
                 <Ionicons name="logo-linkedin" size={30} color="white" />
@@ -182,7 +217,7 @@ class SignUpScreen extends Component {
                   Sign Up with LinkedIn
                 </Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
               style={styles.signupbottomText}
               onPress={() => { this.props.navigation.navigate('SignIn') }}>
@@ -193,8 +228,30 @@ class SignUpScreen extends Component {
             </TouchableOpacity>
           </View>
         </KeyboardAwareScrollView>
+        <AwesomeAlert
+                    show={this.state.showAlert}
+                    showProgress={false}
+                    title="QualPros!"
+                    message={this.state.message}
+                    closeOnTouchOutside={true}
+                    closeOnHardwareBackPress={false}
+                    showConfirmButton={true}
+                    confirmText="Ok"
+                    confirmButtonColor="#d91009"
+                    onConfirmPressed={() => {
+                      this.hideAlert();
+                      // this.props.navigation.navigate("WelcomeScreen")
+                    }}
+                    />
       </Container>
+      
     );
   }
 }
 export default SignUpScreen;
+const styles1 = StyleSheet.create({
+  spinnerTextStyle: {
+    color: "black"
+  },
+
+});

@@ -44,7 +44,7 @@ class SignUpScreen extends Component {
     signIn = async () => {
         const userid = await AsyncStorage.getItem('user_id');
         try {
-            let { data } = await axios.post('https://chat.qualpros.com/api/student_change_password', {
+            let { data } = await axios.post('https://www.qualpros.com/api/student_change_password', {
 
                 student_id: userid,
                 password: this.state.password,

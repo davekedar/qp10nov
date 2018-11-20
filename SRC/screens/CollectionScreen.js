@@ -29,7 +29,6 @@ import AwesomeAlert from "react-native-awesome-alerts";
 import Modal from "react-native-modal";
 
 class CollectionScreen extends Component {
-  
   state = {
     tutors: [],
     student_id: null,
@@ -54,7 +53,7 @@ class CollectionScreen extends Component {
 
     try {
       let { data } = await axios
-        .post("https://chat.qualpros.com/api/get_favourite_tutor_list", {
+        .post("https://www.qualpros.com/api/get_favourite_tutor_list", {
           student_id: userid
         })
         .then(response => {
@@ -128,9 +127,7 @@ class CollectionScreen extends Component {
                         </Body>
                       </Left>
                       <Right>
-                        <TouchableOpacity>
-                          <Icon2 name="bookmark" size={24} color="#d91009" />
-                        </TouchableOpacity>
+                        <Icon2 name="bookmark" size={24} color="#d91009" />
                       </Right>
                     </CardItem>
                     <CardItem

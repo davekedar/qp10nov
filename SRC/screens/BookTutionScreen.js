@@ -87,7 +87,7 @@ class BookTutionScreen extends Component {
     console.log(this.state.bookdatetime);
     try {
       let { data } = await axios
-        .post("https://chat.qualpros.com/api/book_private_tution", {
+        .post("https://www.qualpros.com/api/book_private_tution", {
           student_id: userid,
           tutor_id: 4,
           date_time: this.state.bookdatetime,

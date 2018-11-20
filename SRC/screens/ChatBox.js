@@ -25,6 +25,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Icon1 from "react-native-vector-icons/FontAwesome";
 import axios from "axios";
 import group_img from "../image/group_img.png";
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export default class ChatBox extends Component {
   static navigationOptions = {
@@ -38,7 +39,8 @@ export default class ChatBox extends Component {
     groupId: null,
     group_img1: null,
     groupName: null,
-    group_type: null
+    group_type: null,
+    spinner: null,
   };
 
   renderDate = date => {
@@ -96,6 +98,7 @@ export default class ChatBox extends Component {
   };
 
   onSubmitEditing = async () => {
+    this.setState({ spinner: true })
     try {
       var formcardBody = [];
       formcardBody.push( "groupId=" + this.state.groupId);
@@ -114,7 +117,9 @@ export default class ChatBox extends Component {
         .then(response => {
           console.log(response)
           if (response.status == 200) {
+           
             this.loading();
+            this.setState({ spinner: false })
           } else {
           }
         });
@@ -214,6 +219,13 @@ export default class ChatBox extends Component {
               );
             }}
           />
+          <Spinner
+          color={"#d91009"}
+          visible={this.state.spinner}
+          textContent={'Sending Message...'}
+          textStyle={styles1.spinnerTextStyle}
+          animation={'slide'}
+        />
           <View style={styles.footer}>
             <View style={styles.inputContainer}>
               <TextInput
@@ -224,7 +236,7 @@ export default class ChatBox extends Component {
                   this.setState({
                     typedText
                   })
-                }
+                } 
                 value={
                   this.state.typedText
                 }
@@ -247,7 +259,12 @@ export default class ChatBox extends Component {
     );
   }
 }
+const styles1 = StyleSheet.create({
+  spinnerTextStyle: {
+    color: "#d91009"
+  },
 
+}); 
 const styles = StyleSheet.create({
   container: {
     flex: 1

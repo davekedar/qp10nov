@@ -61,10 +61,7 @@ class SearchScreen extends Component {
     
   // };
 
-  
-  
-
-  componentDidMount() {
+  componentDidMount = () => {
     this.props.navigation.addListener("willFocus", playload => {
       console.log(playload);
       this.loading();
@@ -74,11 +71,9 @@ class SearchScreen extends Component {
   loading = async () => {
     const userid = await AsyncStorage.getItem("user_id");
     this.state.student_id = userid;
-
-
     try {
       let { data } = await axios
-        .post("https://chat.qualpros.com/api/get_favourite_tutor_list", {
+        .post("https://www.qualpros.com/api/get_favourite_tutor_list", {
           student_id: userid
         })
         .then(response => {
@@ -94,7 +89,7 @@ class SearchScreen extends Component {
           }
         });
     } catch (err) {
-      console.log(err);
+      console.log(err.response);
     }
 
 
@@ -103,13 +98,13 @@ class SearchScreen extends Component {
   };
 
   bookmark = async (tutor_id, student_id) => {
-    // this.state.fav_tutors.push(tutor_id);
-    // console.log(fav_tutors);
+    const userid = await AsyncStorage.getItem("user_id");
+    this.state.student_id = userid;
     try {
       let { data } = await axios
-        .post("https://chat.qualpros.com/api/make_as_favourite_tutor", {  
+        .post("https://www.qualpros.com/api/make_as_favourite_tutor", {  
           tutor_id,
-          student_id
+          student_id : userid
         })
         .then(response => {
           if (response.data.data.status === "success") {
@@ -126,7 +121,7 @@ class SearchScreen extends Component {
           }
         });
     } catch (err) {
-      console.log(err);
+      console.log(err.response);
     }
   };
 
@@ -140,6 +135,7 @@ class SearchScreen extends Component {
     this.setState({
       showAlert: false
     });
+    this.props.navigation.navigate('CollectionScreen')
   };
 
   render() {
@@ -147,8 +143,8 @@ class SearchScreen extends Component {
       <SafeAreaView style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
           <ReactiveBase
-            app="qp"
-            credentials="jTlNh5TCo:158f2740-a132-48d8-8ad8-9e3928e4c48a"
+            app="qp_tutors_list1"
+            credentials="S1LjqbHr0:e50993cb-fd1b-4534-9b26-afe293473db1"
           >
          
             <DataSearch
@@ -220,24 +216,13 @@ class SearchScreen extends Component {
                     }}
                   >
                     <Text style={{ padding: 10 }}>{res.tutor_experties}</Text>
-                  </CardItem>
+                    </CardItem>
                   <CardItem>
                     <Left>
                       <Text>Private Tuition £{res.price_per_h}</Text>
                     </Left>
                     <Right>
                       <View style={{ flexDirection: "row" }}>
-                        {/* <Button
-                          style={{ padding: 10, backgroundColor: "#d91009" }}
-                          onPress={() =>
-                            this.props.navigation.navigate(
-                              "SearchScreenCalender",
-                              {}
-                            )
-                          }
-                        >
-                          <Text style={{ color: "#fff" }}>Book Now</Text>
-                        </Button> */} 
                         <Button
                           style={{
                             padding: 10,
@@ -272,7 +257,8 @@ class SearchScreen extends Component {
           confirmText="Ok"
           confirmButtonColor="#d91009"
           onConfirmPressed={() => {
-            this.hideAlert();
+            this.hideAlert()
+            
           }}
         />
       </SafeAreaView>

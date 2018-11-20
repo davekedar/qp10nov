@@ -98,7 +98,7 @@ onIds = async (device) => {
   signIn = async () => {
     let device_type = (Platform.OS === 'ios') ? 'ios' : 'android' 
     try {
-      let { data } = await axios.post('https://chat.qualpros.com/api/login', {
+      let { data } = await axios.post('https://www.qualpros.com/api/login', {
         email: this.state.email,
         password: this.state.password,
         //device_id: this.state.device_id,
@@ -206,7 +206,7 @@ onIds = async (device) => {
         
 
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.fbButton}
             onPress={() => alert("Facebook button Clicked")}
           >
@@ -216,7 +216,7 @@ onIds = async (device) => {
                 Sign in with LinkedIn
                 </Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={styles.bottomText}
             onPress={() => { this.props.navigation.navigate('SignUp') }}>

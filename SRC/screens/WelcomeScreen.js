@@ -4,6 +4,7 @@ import {
   View,
   Image,
   TouchableOpacity,
+  Linking
 } from "react-native";
 import {
   Container,
@@ -16,6 +17,7 @@ import {
 // Screen Styles
 import styles from "../Theme/Styles/Signin";
 import Logo from "../image/qualpros.png";
+import Hyperlink from 'react-native-hyperlink'
 
 class WelcomeScreen extends Component {
     static navigationOptions = {
@@ -55,9 +57,16 @@ class WelcomeScreen extends Component {
               </Text>
             </TouchableOpacity>
           </Form>
+            {/* <Hyperlink linkStyle={ { color: '#2980b9', fontSize: 20 } }>
+      <Text style={ { fontSize: 15 } }>
+        Make clickable strings like https://github.com/obipawan/hyperlink stylable
+      </Text>
+    </Hyperlink> */}
+
+
           <View style={styles.bottomView}>
             <TouchableOpacity style={styles.bottomText}
-              onPress={()=>{this.props.navigation.navigate('Intro')}}>
+              onPress={() => Linking.openURL('https://www.qualpros.com/')}>
               <Text style={styles.bottomText01}>
                 Find out more about QualPros
               </Text>

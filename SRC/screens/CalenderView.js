@@ -26,18 +26,30 @@ class CalenderView extends Component {
         isModalVisible: false,
         isDateTimePickerVisible: false,
         colorcode : null,
-        status_title : null
+        status_title : null,
+        tution_ids:null,
+        total_payment_amount:null,
+        to_show :null
     }
-
+    componentDidMount() {
+        this.props.navigation.addListener("willFocus", playload => {
+          console.log(playload);
+          this.loading();
+        });
+      }
     _toggleModal = () =>
         this.setState({ isModalVisible: !this.state.isModalVisible });
 
-    componentWillMount = async () => {
+        componentWillMount = () => {
+            this.loading();
+          };
+
+        loading = async () => {
         const userid = await AsyncStorage.getItem('user_id');
         try {
             let { data } = await axios
-                .post("https://chat.qualpros.com/api/get_student_calendar", {
-                    student_id: 278,
+                .post("https://www.qualpros.com/api/get_student_calendar", {
+                    student_id: userid,
                 })
                 .then(response => {
                     //console.log(response.data.data.private_tution_date_array);
@@ -45,10 +57,12 @@ class CalenderView extends Component {
                         this.setState({
                             tution_array: response.data.data.private_tution_date_array,
                             tution_detail_array: response.data.data.private_tution_array,
+                            tution_ids: response.data.data.tution_ids,
+                            total_payment_amount: response.data.data.total_payment_amount,
                             //unavailable_array: response.data.data.tutor_schedule_unavailable_date_array,
                         });
                     } else {
-                        alert("Something went wrong");
+                        console.log(err);
                     }
 
 
@@ -107,18 +121,13 @@ class CalenderView extends Component {
                                         </Left>
                                         <Right>
                                         {tutor_dtl.status == '1' ? 
-                                                                (tutor_dtl.payment_status == '0' ? <Button 
+                                                                (tutor_dtl.payment_status == '0' ? 
+                                                            
+                                                                <Button 
                                                                 // onPress={()=>{this.props.navigation.navigate('Stripedemo')}} 
-                                                                onPress={() => {
-                      this.props.navigation.navigate("Stripedemo", {
-                        final_tution_price    :tutor_dtl.final_tution_price,
-                        tutor_id:tutor_dtl.tutor_id,
-                     
-                    });
-                      
-                    }}
-                                                                style={{ padding: 10, backgroundColor: 'green', borderRadius: 40, height: 25 }}>
-                                                            <Text style={{ fontSize: Fonts.moderateScale(10), fontWeight: 'bold' }}>Pay Now</Text> 
+                                                               
+                                                                style={{ padding: 10, backgroundColor: '#563d7c', borderRadius: 40, height: 25 }}>
+                                                            <Text style={{ fontSize: Fonts.moderateScale(10), fontWeight: 'bold' }}>Approved</Text> 
                                                             
                                                         </Button> : <Button style={{ padding: 10, backgroundColor: tutor_dtl.status_color, borderRadius: 40, height: 25 }}>
                                                             <Text style={{ fontSize: Fonts.moderateScale(10), fontWeight: 'bold' }}>{tutor_dtl.status_name}</Text>
@@ -136,7 +145,24 @@ class CalenderView extends Component {
                         })
                     }
 
-                    {/* <Text style={styles.text}>Calendar with marked dates and hidden arrows</Text> */}
+                    {this.state.total_payment_amount > 0 ?
+                    <Button 
+                                                                // onPress={()=>{this.props.navigation.navigate('Stripedemo')}} 
+                                                                onPress={() => {
+                      this.props.navigation.navigate("Stripedemo", {
+                        final_tution_price :this.state.total_payment_amount,
+                        tution_ids    :this.state.tution_ids,
+                       
+                     
+                    });
+                      
+                    }}
+                                                                style={{ padding: 10, backgroundColor: 'green', borderRadius: 40, height: 25,marginLeft:150,marginBottom:15,marginTop:15 }}>
+                                                            <Text style={{ fontSize: Fonts.moderateScale(10), fontWeight: 'bold' }}>Pay Now</Text> 
+                                                            
+                                                        </Button>
+                                                        : null }
+                   
                     <Calendar
                         style={styles.calendar}
                         firstDay={1}

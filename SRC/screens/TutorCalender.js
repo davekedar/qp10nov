@@ -26,16 +26,20 @@ class TutorCalender extends Component {
             unavailable_array: [],
             isModalVisible: false,
             isDateTimePickerVisible: false,
+            tid :null,
         }
 
     _toggleModal = () =>
         this.setState({ isModalVisible: !this.state.isModalVisible });
 
     componentWillMount = async () => {
+        const { navigation } = this.props;
+this.state.tid = navigation.getParam("tutor_id");
+console.log(this.state.tid)
         try {
             let { data } = await axios
-                .post("https://chat.qualpros.com/api/get_tutor_calendar", {
-                    tutor_id: 200
+                .post("https://www.qualpros.com/api/get_tutor_calendar", {
+                    tutor_id: this.state.tid
                 })
                 .then(response => {
                     //console.log(response.data.data.tutor_private_tution_date_array);
@@ -45,7 +49,7 @@ class TutorCalender extends Component {
                             unavailable_array: response.data.data.tutor_schedule_unavailable_date_array,
                         });
                     } else {
-                        alert("Something went wrong");
+                        // alert("Something went wrong");
                     }
                 });
         } catch (err) {
@@ -72,14 +76,14 @@ class TutorCalender extends Component {
             }
 
         } else {
-            console.log('tution available')
-            var objP = Object.assign(
-                ...this.state.tution_array.map(o => ({
-                    [o]: { selected: true, selectedColor: "#d91009", type: "unavailable" }
-                }))
-            );
-            this.setState({ final_array: objP });
-            console.log(this.state.final_array)
+            // console.log('tution available')
+            // var objP = Object.assign(
+            //     ...this.state.tution_array.map(o => ({
+            //         [o]: { selected: true, selectedColor: "#d91009", type: "unavailable" }
+            //     }))
+            // );
+            // this.setState({ final_array: objP });
+            // console.log(this.state.final_array)
         }
     }
 

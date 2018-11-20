@@ -41,7 +41,7 @@ class ForgetPassword extends Component {
      
       
       try {
-        let { data } = await axios.post('https://chat.qualpros.com/api/forgot_password', {
+        let { data } = await axios.post('https://www.qualpros.com/api/forgot_password', {
          
           email: this.state.email,
         

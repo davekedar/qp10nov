@@ -5,7 +5,8 @@ import {
   Image,
   TouchableOpacity,
   I18nManager,
-  AsyncStorage
+  AsyncStorage,
+  StyleSheet
 } from "react-native";
 import {
   Container,
@@ -26,6 +27,10 @@ import Logo from "../image/qualpros.png";
 import axios from "axios";
 import AwesomeAlert from "react-native-awesome-alerts";
 import Stripe from "react-native-stripe-api";
+import Spinner from 'react-native-loading-spinner-overlay';
+
+
+
 import "whatwg-fetch";
 
 class Stripedemo extends Component {
@@ -45,17 +50,30 @@ class Stripedemo extends Component {
     payment_token: null,
     duration:null,
     user:[],
-    final_tution_price:null
+    final_tution_price:null,
+    tution_ids:null,
+    student_id : null,
+    spinner: null,
+    full_name : null
   };
 
+
+
   componentWillMount = async () => {
+   
     //this._showDateTimePicker;
     const { navigation } = this.props;
     this.state.final_tution_price = navigation.getParam("final_tution_price");
+    this.state.tution_ids = navigation.getParam("tution_ids");
+    console.log( this.state.tution_ids);
+    console.log( this.state.final_tution_price);
     const userid = await AsyncStorage.getItem('user_id');
+    const user_full_name = await AsyncStorage.getItem('user_full_name');
+    this.state.student_id = userid
+    this.state.full_name = user_full_name
 
         try {
-            let { data } = await axios.post('https://chat.qualpros.com/api/get_student_profile', {
+            let { data } = await axios.post('https://www.qualpros.com/api/get_student_profile', {
                 student_id: userid
             })
                 .then((response) => {
@@ -86,7 +104,8 @@ class Stripedemo extends Component {
     //   "card[exp_year]": "2023",
     //   "card[cvc]": "123"
     // };
-
+    this.setState({ spinner: true })
+  
     var cardDetails = {
       "card[number]": this.state.number,
       "card[exp_month]": this.state.expmonth,
@@ -101,7 +120,7 @@ class Stripedemo extends Component {
 
       formBody.push(encodedKey + "=" + encodedValue);
     }
-    console.log(formBody);
+    // console.log(formBody);
     formBody = formBody.join("&");
 
     let { data } = fetch("https://api.stripe.com/v1/tokens", {
@@ -110,13 +129,13 @@ class Stripedemo extends Component {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: "Bearer " + "sk_test_cRS06cF3af9DShvPKWGdPwlu"
+        Authorization: "Bearer " + "sk_live_qfFaSkOKeuTNXNDn5VKthYsb"
       }
     })
       .then(response => {
         if (response.status == 200) {
           response.json().then(responseJson => {
-            console.log(this.state.user.email);
+            // console.log(this.state.user.email);
             this.state.payment_token = responseJson.id;
             var cardcharges = {
               amount: this.state.final_tution_price*100,
@@ -124,7 +143,7 @@ class Stripedemo extends Component {
               source: this.state.payment_token,
               // source:"",
               receipt_email: this.state.user.email,
-              description: "test payment"
+              description: "Charge for private tuition from "+this.state.full_name
             };
 
             var formcardBody = [];
@@ -143,24 +162,79 @@ class Stripedemo extends Component {
               headers: {
                 Accept: "application/json",
                 "Content-Type": "application/x-www-form-urlencoded",
-                Authorization: "Bearer " + "sk_test_cRS06cF3af9DShvPKWGdPwlu"
+                Authorization: "Bearer " + "sk_live_qfFaSkOKeuTNXNDn5VKthYsb"
               }
             })
               .then(cardresponce => {
                 if (cardresponce.status == 200) {
-                  console.log(cardresponce);
-                  alert("payment completed");
+                  cardresponce.json().then(responseJson => {
+                    console.log(responseJson)
+                 
+                   
+                 
+                  try {
+                    let { data } =  axios.post('https://www.qualpros.com/api/store_stripe_paymet_response', {
+                      payment_type: "private",
+                      tution_id: this.state.tution_ids,  
+                      student_id: this.state.student_id,
+                      funding: responseJson.source.funding,
+                      brand: responseJson.source.brand,
+                      id: responseJson.source.id,
+                      created: responseJson.created,
+                      currency: responseJson.currency,
+                      country:responseJson.source.country,
+                      amount: responseJson.amount,
+                      description: responseJson.description,
+                      receipt_email: responseJson.receipt_email,
+                    })
+                      .then((response) => {
+                        
+                        this.setState({ spinner: false })
+                        if (response.data.data.status === 'success') {
+                          this.setState({
+                            message: response.data.data.message,
+                            showAlert: true,
+                        })
+                        
+                        } else {
+                          
+                          // this.setState({ spinner: false })
+                          this.setState({
+                            message: response.data.data.message,
+                            showAlert: true,
+                            spinner:false
+                        })
+              
+              
+                        }
+                      })
+                  } catch (err) {
+                    console.log(err);
+                  }  
+                });
+
+                //   this.setState({
+                //     message: "Payment Completedß",
+                //     showAlert: true,
+                // })
+                  // alert("payment completed");
                 } else {
+                  this.setState({ spinner: false })
                   cardresponce.json().then(cardresponseJson => {
-                    console.log(cardresponseJson);
                     
+                    
+                  
+                    
+                    this.setState({
+                      message: cardresponseJson.error.message,
+                      showAlert: true,
+                  })
         
-                    alert(cardresponseJson.error.message);
                   });
                   // console.log(cardresponce);
                 }
               })
-              .catch(function(carderror) {
+              .catch(function(carderror) {  
                 console.log("came in fail 2");
                 console.log(carderror);
               });
@@ -168,9 +242,12 @@ class Stripedemo extends Component {
         } else {
           response.json().then(responseJson => {
             console.log(responseJson);
-
-            alert(responseJson.error.message);
-          });
+            this.setState({ spinner: false })
+            // alert(responseJson.error.message);
+            this.setState({
+              message: responseJson.error.message,
+              showAlert: true,
+          })          });
         }
       })
       .catch(function(err) {
@@ -201,6 +278,13 @@ class Stripedemo extends Component {
 
     return (
       <Container>
+       <Spinner
+          color={"black"}
+          visible={this.state.spinner}
+          textContent={'Please wait...'}
+          textStyle={styles1.spinnerTextStyle}
+          animation={'slide'}
+        />
         <Header style={styles.header}>
           <Left style={styles.left}>
             <TouchableOpacity
@@ -225,6 +309,7 @@ class Stripedemo extends Component {
           <Text style={{fontWeight:"bold",fontSize:30,color:"#d91009"}}>Enter Card Details</Text>
         </View>
         <Form style={styles.form}>
+       
           <Item rounded style={styles.inputStyle}>
             <Input
               textAlign={I18nManager.isRTL ? "right" : "left"}
@@ -297,7 +382,7 @@ class Stripedemo extends Component {
           confirmText="Ok"
           confirmButtonColor="#d91009"
           onConfirmPressed={() => {
-            this.hideAlert();
+            this.props.navigation.navigate("CalenderView")
           }}
         />
       </Container>
@@ -305,3 +390,9 @@ class Stripedemo extends Component {
   }
 }
 export default Stripedemo;
+const styles1 = StyleSheet.create({
+  spinnerTextStyle: {
+    color: "black"
+  },
+
+}); 

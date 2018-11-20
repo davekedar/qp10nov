@@ -37,6 +37,9 @@ import Stripedemo from "./SRC/screens/Stripedemo";
 import BookTutionScreen from "./SRC/screens/BookTutionScreen";
 import Paypaldemo from "./SRC/screens/Paypaldemo";
 import Groupmembers from './SRC/screens/Groupmembers';
+//import Intro from './SRC/screens/Intro';
+import Chapter_detail from './SRC/screens/Chapter_detail';
+
 
 
 const AuthStackNavigator = createStackNavigator({
@@ -59,10 +62,12 @@ const AuthStackNavigator = createStackNavigator({
   BookTutionScreen:BookTutionScreen,
   Paypaldemo:Paypaldemo,
   Groupmembers:Groupmembers,
+  //Intro:Intro,
+  Chapter_detail:Chapter_detail,
   
 });
 
-
+console.disableYellowBox = true;
 
 const AppTabNavigator = createBottomTabNavigator({
   SearchScreen: {
@@ -137,8 +142,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   
-
-  // logo:{
-    
-  // }
 });

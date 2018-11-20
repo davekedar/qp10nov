@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Platform, ScrollView, AsyncStorage, FlatList, View } from "react-native";
+import { StyleSheet, Platform, ScrollView, AsyncStorage, FlatList, View, TouchableOpacity } from "react-native";
 import {
   Container,
   Header,
@@ -14,18 +14,21 @@ import {
 import axios from "axios";
 import group_img from "../image/group_img.png";
 import {ListItem, List} from 'react-native-elements';
+import Ionicons from "react-native-vector-icons/Ionicons";
+import Spinner from 'react-native-loading-spinner-overlay';
 
 class ChatScreen extends Component {
   state = {
     groups: [],
     student_id: null
   };
-  componentWillMount = () => {
-    this.loading();
+  componentWillMount = async () => {
+    await this.loading();
     
   };
 
   loading = async () => {
+    this.setState({ spinner: true })
     const userid = await AsyncStorage.getItem("user_id");
     this.state.student_id = userid;
 
@@ -42,7 +45,7 @@ class ChatScreen extends Component {
         .then(response => {
           if (response.status == 200) {
             this.setState({ groups: response.data.response });
-              console.log(response)
+            this.setState({ spinner: false })
           } else {
           }
         });
@@ -67,6 +70,7 @@ class ChatScreen extends Component {
     return (
       <Container>
         <Header style={{ backgroundColor: "#d91009" }}>
+        <Left />
           <Body>
             <Text
               style={{
@@ -78,8 +82,29 @@ class ChatScreen extends Component {
               Chat
             </Text>
           </Body>
+          <Right>
+              <TouchableOpacity
+                    style={styles.backArrow}
+                    onPress={() => this.props.navigation.navigate("AddMemberToChat", {
+                        userid: this.state.student_id
+                        })}
+                  >
+                    <Ionicons
+                      name='md-person-add'
+                      size={30}
+                      color="#fff"
+                    />
+                  </TouchableOpacity>
+          </Right>
         </Header>
         <ScrollView>
+            <Spinner
+              color={"#d91009"}
+              visible={this.state.spinner}
+              textContent={''}
+              textStyle={styles1.spinnerTextStyle}
+              animation={'slide'}
+            />
             <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}>
                   <FlatList
                     data={this.state.groups}
@@ -111,6 +136,13 @@ class ChatScreen extends Component {
   }
 }
 export default ChatScreen;
+
+const styles1 = StyleSheet.create({
+  spinnerTextStyle: {
+    color: "#d91009"
+  },
+
+}); 
 
 const styles = StyleSheet.create({
   container: {

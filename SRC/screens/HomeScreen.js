@@ -19,27 +19,25 @@ class HomeScreen extends Component {
 
   state = {
     data: [],
-    student_id: "278"
+    student_id: "278",
+    to_show:null
   };
 
   componentWillMount = async () => {
-    // const userid = await AsyncStorage.getItem('user_id');
-    // this.state.student_id = userid
-
     try {
       let { data } = await axios
-        .post("https://chat.qualpros.com/api/student_private_tution_history", {
+        .post("https://www.qualpros.com/api/student_private_tution_history", {
           student_id: "278"
         })
         .then(response => {
           if (response.data.data.status === "success") {
-            //console.log(response.data.data.private_tution_confirm_array)
+            this.state.to_show = 1;
             this.setState({
               data: response.data.data.private_tution_confirm_array
             });
-            // console.log(response.data.data.tutor_list_array);
+            
           } else {
-            console.log(response.data.data);
+            this.state.to_show = 0;
           }
         });
     } catch (err) {
@@ -78,11 +76,12 @@ class HomeScreen extends Component {
                 color: "#fff"
               }}
             >
-              Home
+              Booking History
             </Text>
           </Body>
         </Header>
         <Content>
+        {this.state.to_show == 1 ?
           <Timeline
             circleColor="#939eaf"
             lineColor="#d91009"
@@ -105,6 +104,7 @@ class HomeScreen extends Component {
             timeContainerStyle={{ minWidth: 72 }}
             renderDetail={this.renderDetail}
           />
+          : <Text style={{fontSize:30,color:"#d91009",fontWeight:"bold"}}> No tution request found</Text> }
         </Content>
       </Container>
     );

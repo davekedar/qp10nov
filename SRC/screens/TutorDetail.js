@@ -5,7 +5,8 @@ import {
   Platform,
   TouchableOpacity,
   View,
-  Alert
+  Alert,
+  AsyncStorage
 } from "react-native";
 import {
   Container,
@@ -20,7 +21,8 @@ import {
   Body,
   Right,
   Thumbnail,
-  Text
+  Text,
+  Form, Item,Input
 } from "native-base";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import axios from "axios";
@@ -28,9 +30,12 @@ import Icon2 from "react-native-vector-icons/FontAwesome";
 //import {ReadMore, RegularText} from 'react-native-read-more-text';
 import ViewMoreText from "react-native-view-more-text";
 import Modal from "react-native-modal";
-
+import Icon1 from 'react-native-vector-icons/FontAwesome';
 import Video from "react-native-af-video-player";
 import video_img from "../image/qualpros.png";
+import StarRating from 'react-native-star-rating';
+import AwesomeAlert from 'react-native-awesome-alerts';
+
 
 class TutorDetail extends Component {
   static navigationOptions = {
@@ -71,7 +76,8 @@ class TutorDetail extends Component {
   componentWillMount = async () => {
     this.loading();
   };
-  loading = async () => {
+  loading = async () => { 
+    const userid = await AsyncStorage.getItem('user_id');
     const { navigation } = this.props;
     const tutor_id = navigation.getParam("tutor_id");
     await this.setState({
@@ -79,8 +85,9 @@ class TutorDetail extends Component {
     });
     try {
       let { data } = await axios
-        .post("https://chat.qualpros.com/api/get_one_tutor", {
-          tutor_id: this.state.tutor_id
+        .post("https://www.qualpros.com/api/get_one_tutor", {
+          tutor_id: this.state.tutor_id,
+          student_id : userid
         })
         .then(response => {
           console.log(response.data.data);
@@ -101,6 +108,75 @@ class TutorDetail extends Component {
       console.log(err);
     }
   };
+
+  onStarRatingPress = async (rating) => {
+    const { navigation } = this.props;
+    const course_id = navigation.getParam('courseId');
+    const userid = await AsyncStorage.getItem('user_id');
+
+    try {
+        let { data } = await axios.post('https://www.qualpros.com/api/post_tutor_rating', {
+            //course_id: course_id,
+            tutor_id:this.state.tutor_id,
+            student_id: userid,
+            point: this.state.selectedStarcount,
+            comment: this.state.comments
+        })
+            .then((result) => {
+                console.log(result.data.data.status);
+                if (result.data.data.status === 'success') {
+
+                        this.setState({
+                            message: result.data.data.message,
+                            showAlert: true,
+                            isModalVisible: false
+                        })
+
+
+
+                } else {
+                    // console.log(response.data.data);
+
+                    this.setState({
+                        message: result.data.data.message,
+                        showAlert: true,
+                        isModalVisible: false
+                    })
+
+
+                }
+            })
+    }
+    catch (err) {
+        // console.log(err)
+        // this.setState({
+        //     message: response.data.data.message,
+        //     showAlert: true,
+        //     isModalVisible: false
+        // })
+    }
+
+}
+
+onStarRating(rating) {
+    this.setState({
+        selectedStarcount: rating
+
+    });
+}
+
+showAlert = () => {
+    this.setState({
+        showAlert: true
+    });
+};
+
+hideAlert = () => {
+    this.setState({
+        showAlert: false
+    });
+    this.loading();
+};
 
   onDayPress(day) {
     this.setState({
@@ -220,6 +296,88 @@ class TutorDetail extends Component {
                       <Text note style={{ width: 220 }}>
                         {tutor.tutor_experties_category}
                       </Text>
+                      {tutor.is_allow_rating === "True" ?
+                      tutor.is_rated === 0 ?
+                      <TouchableOpacity onPress={this._toggleModal}>
+                  
+                                            <Text style={{ color: '#d91009' }}>Rate Here</Text> 
+                                        </TouchableOpacity>
+                                        : null 
+                                        :null }
+                                          <Modal isVisible={this.state.isModalVisible} style={styles.modal}>
+                                              <View style={{ flex: 1, justifyContent: 'center'}}>
+
+                                                  <Card style={{ borderColor: '#d91009' }}>
+
+
+                                                      <CardItem style={{ borderBottomWidth: 1, borderColor: '#d91009' }}>
+                                                          <Left>
+
+                                                              <Body>
+                                                                  <Text style={{ width: 220, color: '#d91009' }}>
+                                                                      Course Rating
+                                                                  </Text>
+
+                                                              </Body>
+                                                          </Left>
+                                                          <Right>
+
+                                                              <TouchableOpacity onPress={this._toggleModal}>
+                                                                  <Text>
+                                                                      <Icon1 active name="close" size={24} color='#d91009' />
+                                                                  </Text>
+                                                              </TouchableOpacity>
+
+
+                                                          </Right>
+                                                      </CardItem>
+                                                      <CardItem>
+                                                          <Left >
+
+                                                              <Body>
+                                                                  
+                                                                      <Form>
+
+                                                                          
+
+                                                                              <StarRating
+                                                                              style={{ marginLeft: 24, width: 220 }}
+                                                                                  disabled={false}
+                                                                                  //maxStars={}
+                                                                                  rating={this.state.selectedStarcount}
+                                                                                  starSize={25}
+                                                                                  halfStarEnabled
+                                                                                  fullStarColor='#d91009'
+                                                                                  //selectedStar={(rating) => this.onStarRatingPress(rating)}
+                                                                                  selectedStar={(rating) => this.onStarRating(rating)}
+                                                                              />
+                                                                          
+
+
+                                                                          <Item>
+                                                                              <Input
+                                                                                  onChangeText={(comments) => { this.setState({ comments }) }}
+                                                                                  style={{ marginRight: 60 }} placeholder="Comments" />
+                                                                          </Item>
+
+                                                                          <Button style={{ marginTop: 5, marginLeft: 7 }} bordered danger small onPress={this.onStarRatingPress}>
+                                                                              <Text>Rate Now</Text>
+                                                                          </Button>
+
+
+
+                                                                      </Form>
+                                                                    
+                                                              </Body>
+                                                          </Left>
+
+                                                      </CardItem>
+
+
+                                                  </Card>
+
+                                              </View>
+                                          </Modal>
                     </Body>
                   </Left>
                   <Right />
@@ -240,7 +398,7 @@ class TutorDetail extends Component {
                       />
                 }
                   
-                  
+                   
                 </View>
                 <CardItem />
                 <CardItem cardBody>
@@ -262,9 +420,11 @@ class TutorDetail extends Component {
                     <Button
                       style={{ padding: 10, backgroundColor: "#d91009" }}
                       onPress={() => {
-                this.props.navigation.navigate("TutorCalender");
+                this.props.navigation.navigate("TutorCalender",{
+                  "tutor_id":tutor.tutor_id
+                });
               }}
-                    >
+                     >
                       <Text>Book Now</Text>
                     </Button>
                   </Right>
@@ -333,6 +493,21 @@ class TutorDetail extends Component {
             </View>
           ) : null}
         </ScrollView>
+        <AwesomeAlert
+                        show={this.state.showAlert}
+                        showProgress={false}
+                        title="QualPros!"
+                        message={this.state.message}
+                        closeOnTouchOutside={true}
+                        closeOnHardwareBackPress={false}
+                        showConfirmButton={true}
+                        confirmText="Ok"
+                        confirmButtonColor="#d91009"
+                        onConfirmPressed={() => {
+                            this.hideAlert();
+                        }}
+                    />
+
       </Container>
     );
   }
