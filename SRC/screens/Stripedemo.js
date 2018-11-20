@@ -122,14 +122,14 @@ class Stripedemo extends Component {
     }
     // console.log(formBody);
     formBody = formBody.join("&");
-
+    //live key below
     let { data } = fetch("https://api.stripe.com/v1/tokens", {
       method: "post",
       body: formBody,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: "Bearer " + "sk_live_qfFaSkOKeuTNXNDn5VKthYsb"
+        Authorization: "Bearer " + "live_key"
       }
     })
       .then(response => {
